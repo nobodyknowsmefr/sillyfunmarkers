@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INFINITE ARCHIVE - Welcome!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: Verdana, Arial, sans-serif;
+            font-size: 12px;
+            background-color: #ffffff;
+            color: #000000;
+            position: relative;
+        }
+        
+        #left-ad {
+            position: absolute;
+            left: calc((100% - 1400px) / 2 - 255px);
+            top: 120px;
+            width: 200px;
+            z-index: 100;
+        }
+        
+        #left-ad img {
+            width: 100%;
+            height: auto;
+        }
+        
+        #right-ad {
+            position: absolute;
+            right: calc((100% - 1400px) / 2 - 250px);
+            top: 135px;
+            width: 250px;
+            z-index: 100;
+        }
+        
+        #right-ad img {
+            width: 100%;
+            height: auto;
+        }
+        
+        #right-ad-2 {
+            position: absolute;
+            right: calc((100% - 1400px) / 2 - 250px);
+            top: 520px;
+            width: 250px;
+            z-index: 100;
+        }
+        
+        #right-ad-2 img {
+            width: 100%;
+            height: auto;
+        }
+        
+        #container {
+            width: 1400px;
+            margin: 0 auto;
+            background-color: #ffffff;
+        }
+        
+        #header {
+            background: linear-gradient(180deg, #ff6600 0%, #ff3300 100%);
+            border-bottom: 3px solid #000000;
+        }
+        
+        #header > div {
+            padding: 15px;
+        }
+        
+        #header h1 {
+            color: #ffffff;
+            font-size: 32px;
+            font-weight: bold;
+            text-shadow: 2px 2px #cc0000;
+            letter-spacing: 2px;
+        }
+        
+        #header .tagline {
+            color: #ffff00;
+            font-size: 11px;
+            margin-top: 5px;
+        }
+        
+        #nav {
+            background-color: #000000;
+            border-bottom: 2px solid #ff6600;
+        }
+        
+        #nav > div {
+            padding: 8px 15px;
+        }
+        
+        #nav a {
+            color: #ffffff;
+            text-decoration: none;
+            margin-right: 20px;
+            font-weight: bold;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+        
+        #nav a:hover {
+            color: #ff6600;
+        }
+        
+        #main {
+            display: table;
+            width: 100%;
+        }
+        
+        #left-sidebar {
+            display: table-cell;
+            width: 400px;
+            padding: 15px;
+            margin-left: -10px;
+            vertical-align: top;
+            border-right: 1px dotted #cccccc;
+        }
+        
+        #center {
+            display: table-cell;
+            width: 520px;
+            padding: 15px;
+            vertical-align: top;
+            text-align: center;
+        }
+        
+        #right-sidebar {
+            display: table-cell;
+            width: 400px;
+            padding: 15px;
+            vertical-align: top;
+            border-left: 1px dotted #cccccc;
+        }
+        
+        .section-title {
+            color: #ff3300;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #ff6600;
+            padding-bottom: 5px;
+        }
+        
+        .content-block {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dotted #cccccc;
+        }
+        
+        .content-block:last-child {
+            border-bottom: none;
+        }
+        
+        .content-block p {
+            line-height: 1.6;
+            color: #333333;
+            margin-bottom: 8px;
+        }
+        
+        .image-box {
+            width: 100%;
+            height: 650px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            border: 2px solid #ff6600;
+        }
+        
+        .update-date {
+            color: #999999;
+            font-size: 10px;
+            font-style: italic;
+        }
+        
+        a {
+            color: #0066cc;
+            text-decoration: underline;
+        }
+        
+        a:hover {
+            color: #ff3300;
+        }
+        
+        #footer {
+            background-color: #000000;
+            color: #ffffff;
+            text-align: center;
+            padding: 15px;
+            font-size: 10px;
+            border-top: 2px solid #ff6600;
+        }
+        
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        li {
+            margin: 5px 0;
+            line-height: 1.4;
+        }
+        
+        .sidebar-box {
+            background-color: #f9f9f9;
+            border: 1px solid #cccccc;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .mobile-ads {
+            display: none;
+        }
+        
+        .mobile-limited {
+            display: none;
+        }
+        
+        #clicktwin-popup {
+            position: fixed;
+            width: 150px;
+            cursor: pointer;
+            z-index: 9999;
+            transition: all 0.5s ease-in-out;
+            animation: float-around 3s infinite;
+        }
+        
+        #clicktwin-popup img {
+            width: 100%;
+            height: auto;
+            pointer-events: none;
+        }
+        
+        #clicktwin-popup.hidden {
+            display: none;
+        }
+        
+        #birdgif {
+            position: absolute;
+            right: calc((100% - 1400px) / 2 - 250px);
+            top: 280px;
+            width: 250px;
+            z-index: 100;
+        }
+        
+        #birdgif img {
+            width: 100%;
+            height: auto;
+        }
+        
+        @keyframes float-around {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(20px, -20px) rotate(5deg);
+            }
+            50% {
+                transform: translate(-20px, 20px) rotate(-5deg);
+            }
+            75% {
+                transform: translate(20px, 20px) rotate(3deg);
+            }
+        }
+        
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+        
+        /* Mobile Responsive Styles */
+        @media screen and (max-width: 1024px) {
+            html, body {
+                overflow-x: hidden;
+                max-width: 100%;
+            }
+            
+            #header > div,
+            #nav > div {
+                width: 100% !important;
+                padding: 0 10px;
+                box-sizing: border-box;
+            }
+            
+            #header > div {
+                padding-top: 15px;
+                padding-bottom: 15px;
+                overflow: hidden;
+            }
+            
+            #header .tagline {
+                display: inline-block;
+                white-space: nowrap;
+                animation: scroll-left 35s linear infinite;
+                padding-left: 10%;
+            }
+            
+            #container {
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            #left-ad, #right-ad, #right-ad-2 {
+                display: none;
+            }
+            
+            #birdgif {
+                display: none;
+            }
+            
+            .mobile-ads {
+                display: block;
+                padding: 10px;
+                order: 2;
+            }
+            
+            .mobile-limited {
+                display: block;
+                padding: 10px;
+                order: 3;
+            }
+            
+            .mobile-ads img:nth-child(1) {
+                /* dontay - top left corner of sandwich */
+                position: absolute;
+                top: 125px;
+                left: 0px;
+                width: 80px;
+                z-index: 10;
+            }
+            
+            .mobile-ads img:nth-child(2) {
+                /* birdad - top right corner of sandwich */
+                position: absolute;
+                top: 135px;
+                right: 15px;
+                width: 180px;
+                z-index: 10;
+            }
+            
+            .mobile-ads img:nth-child(3) {
+                /* tutorsad - appears below sandwich as normal */
+                width: 100%;
+                max-width: 300px;
+                height: auto;
+                display: block;
+                margin: 10px auto;
+            }
+            
+            #main {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            #left-sidebar {
+                order: 4;
+                width: 100%;
+                border: none;
+                padding: 10px;
+            }
+            
+            #center {
+                order: 1;
+                width: 100%;
+                padding: 10px;
+                position: relative;
+            }
+            
+            #right-sidebar {
+                order: 5;
+                width: 100%;
+                border: none;
+                padding: 10px;
+            }
+            
+            #header h1 {
+                font-size: 20px;
+            }
+            
+            #header h1 img {
+                height: 32px !important;
+            }
+            
+            #nav > div {
+                padding: 8px 10px;
+            }
+            
+            #nav a {
+                margin-right: 10px;
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="birdgif">
+        <img src="birdgif.gif" alt="Bird chillin">
+    </div>
+    
+    <div id="clicktwin-popup">
+        <img src="clicktwin.png" alt="Click me!">
+    </div>
+    
+    <div id="left-ad">
+        <img src="dontay.png" alt="All facts verified">
+    </div>
+    
+    <div id="right-ad">
+        <img src="birdad.png" alt="Bird Ad">
+    </div>
+    
+    <div id="right-ad-2">
+        <img src="tutorsad.png" alt="Tutorial Ad">
+    </div>
+    
+    <div id="header">
+        <div style="width: 1400px; margin: 0 auto;">
+            <h1><img src="logo.png" alt="Logo" style="height: 48px; vertical-align: middle; margin-right: 10px;"> INFINITE ARCHIVE</h1>
+            <div class="tagline">the internet man... this website was made by me and dontayvius... sorry about the ads its how i can keep the internet on man... saving up for that bird game 4 pre-order too so i'll be posting a lot about that here... later yall... enjoy....</div>
+        </div>
+    </div>
+    
+    <div id="nav">
+        <div style="width: 1400px; margin: 0 auto;">
+            <a href="index.html">HOME</a>
+            <a href="blog.html">BLOG</a>
+            <a href="Games.html">GAMES</a>
+            <span style="color: #ff3300; margin-left: 20px; margin-right: 10px;">| sponsored sites:</span>
+            <a href="dbay.html" style="color: #ffff00;">DBAY STORE</a>
+            <a href="dontayvious.html" style="color: #ffff00;">DONTAYVIOUS LIL ONLINE SHOP</a>
+            <a href="https://discord.gg/ztcpYm3d" style="color: #ffff00;" target="_blank">BIRDCORD SERVER</a>
+        </div>
+    </div>
+    
+    <div id="container">
+        
+        <div id="main">
+            <!-- LEFT SIDEBAR -->
+            <div id="left-sidebar">
+                <div class="content-block">
+                    <div class="section-title">LATEST BLOG POSTS</div>
+                    <p><strong>News On Bird Game 3</strong><br>
+                    <a href="blog.html">Read more »</a></p>
+                    
+                    <p><strong>How To Overclock Your Flip Phone</strong><br>
+                    <a href="blog.html">Read more »</a></p>
+                    
+                    <p><strong>Rapper B Parts Way With The Sentient Timberland Boot: Rise And Fall Of A Star</strong><br>
+                    <a href="blog.html">Read more »</a></p>
+                    
+                    <p><strong>He's Back: Local Timb Stomper Returns To The Hood, A Good Omen?</strong><br>
+                    <a href="blog.html">Read more »</a></p>
+                </div>
+                
+                <div class="content-block">
+                    <div class="section-title">Cultural News</div>
+                    <p><strong>Music:</strong> B and The Sentient Timberland Boot fell off yall....</p>
+                    <p><strong>Tech:</strong> Bird Game 4 LEAKED on LimeWire...</p>
+                    <p><strong>Social:</strong> Limited addition Bird Game 3 Launch tees skyrocketing in resale on DBay.com</p>
+                </div>
+                
+                <div class="content-block">
+                    <a href="dontayvious.html"><img src="shop.gif" alt="Shop" style="width: 100%; height: auto;"></a>
+                </div>
+            </div>
+            
+            <!-- CENTER CONTENT -->
+            <div id="center">
+                <img src="sandwich.png" alt="Sandwich" style="width: 100%; height: auto;">
+            </div>
+            
+            <!-- MOBILE ADS (only visible on mobile) -->
+            <div class="mobile-ads">
+                <img src="dontay.png" alt="All facts verified">
+                <img src="birdad.png" alt="Bird Ad">
+                <img src="tutorsad.png" alt="Tutorial Ad">
+                <div style="position: relative; text-align: center; margin: 20px 0;">
+                    <img src="birdgif.gif" alt="Bird chillin" style="width: 140px; height: auto; position: relative; top: -1550px; left: -55px;">
+                </div>
+            </div>
+            
+            <!-- MOBILE LIMITED IMAGE (only visible on mobile) -->
+            <div class="mobile-limited">
+                <a href="dbay.html"><img src="limited.png" alt="Limited" style="width: 100%; max-width: 300px; height: auto; display: block; margin: 0 auto;"></a>
+            </div>
+            
+            <!-- RIGHT SIDEBAR -->
+            <div id="right-sidebar">
+                <div class="content-block">
+                    <div class="section-title">Weekly Local Business Listing</div>
+                    <ul>
+                        <li>→ Meat Cake's Tasty Meats and Co.</li>
+                        <li>→ Big Terry's CD's and More!</li>
+                        <li>→ Big Terry's CD's and More! (he paid us extra to mention him twice)</li>
+                    </ul>
+                </div>
+                
+                <div class="content-block">
+                    <div class="section-title">Dontayvious Tips For Success.</div>
+                    <p style="font-size: 11px; line-height: 1.5;">
+                        ✓ Play the game.<br>
+                        ✓ Mod the game.<br>
+                        ✓ DO NOT pay for the game.<br>
+                        ✓ Buy a golden flip<br>
+                        ✓ Play the game.<br>
+                        ✓ Play the game.<br>
+                        ✓ Play the game. <br>
+                    </p>
+                </div>
+                
+                <div class="content-block">
+                    <a href="dbay.html"><img src="limited.png" alt="Limited" style="width: 100%; height: auto;"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="footer">
+        © 2005 INFINITE ARCHIVE 
+    </div>
+    
+    <script>
+        // Clicktwin floating popup script - EVIL MODE
+        (function() {
+            let allPopups = [];
+            let globalClickCount = 0;
+            const clicksToMultiply = 4;
+            const totalPopups = 20;
+            let baseMoveSpeed = 2000; // milliseconds between moves
+            let audioSpamInterval = null;
+            
+            // Function to play click sound once
+            function playClickSound() {
+                const audio = new Audio('click.wav');
+                audio.play().catch(e => console.log('Audio play failed:', e));
+            }
+            
+            // Function to spam the audio (overlapping)
+            function startAudioSpam() {
+                // Play immediately
+                playClickSound();
+                
+                // Then spam it every 100ms
+                audioSpamInterval = setInterval(() => {
+                    playClickSound();
+                }, 100);
+            }
+            
+            // Function to stop audio spam
+            function stopAudioSpam() {
+                if (audioSpamInterval) {
+                    clearInterval(audioSpamInterval);
+                    audioSpamInterval = null;
+                }
+            }
+            
+            // Function to create a popup
+            function createPopup(isOriginal = false) {
+                const popup = document.createElement('div');
+                popup.className = 'clicktwin-instance';
+                popup.style.position = 'fixed';
+                popup.style.width = '150px';
+                popup.style.cursor = 'pointer';
+                popup.style.zIndex = '9999';
+                popup.style.transition = 'all 0.3s ease-in-out';
+                
+                const img = document.createElement('img');
+                img.src = 'clicktwin.png';
+                img.style.width = '100%';
+                img.style.height = 'auto';
+                img.style.pointerEvents = 'none';
+                
+                popup.appendChild(img);
+                
+                // Add clickable div in upper right corner that goes to dbay
+                const dbayLink = document.createElement('div');
+                dbayLink.style.position = 'absolute';
+                dbayLink.style.top = '0';
+                dbayLink.style.right = '0';
+                dbayLink.style.width = '40px';
+                dbayLink.style.height = '40px';
+                dbayLink.style.cursor = 'pointer';
+                dbayLink.style.zIndex = '10000';
+                dbayLink.style.pointerEvents = 'auto';
+                
+                dbayLink.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    window.location.href = 'dbay.html';
+                });
+                
+                popup.appendChild(dbayLink);
+                document.body.appendChild(popup);
+                
+                // Random initial position
+                movePopupToRandom(popup);
+                
+                // Store popup data
+                const popupData = {
+                    element: popup,
+                    isOriginal: isOriginal,
+                    interval: null
+                };
+                
+                // Start moving it around
+                popupData.interval = setInterval(() => {
+                    movePopupToRandom(popup);
+                }, baseMoveSpeed);
+                
+                allPopups.push(popupData);
+                
+                // Handle click
+                popup.addEventListener('click', function() {
+                    globalClickCount++;
+                    
+                    // If this is the original and it's the 4th click, MULTIPLY!
+                    if (isOriginal && globalClickCount === clicksToMultiply) {
+                        // START AUDIO SPAM!
+                        startAudioSpam();
+                        
+                        // Clear the original's interval
+                        clearInterval(popupData.interval);
+                        
+                        // Remove original from screen
+                        popup.remove();
+                        allPopups = allPopups.filter(pd => pd.element !== popup);
+                        
+                        // Spawn 20 new popups all at once!
+                        console.log('SPAWNING 20 POPUPS!');
+                        const spawnedPopups = [];
+                        for (let i = 0; i < totalPopups; i++) {
+                            const newPopup = createPopup(false);
+                            spawnedPopups.push(newPopup);
+                        }
+                        
+                        // Make them all move faster
+                        baseMoveSpeed = 800;
+                        
+                        // Update all existing intervals
+                        allPopups.forEach(pd => {
+                            if (pd.element && pd.interval) {
+                                clearInterval(pd.interval);
+                                pd.interval = setInterval(() => {
+                                    movePopupToRandom(pd.element);
+                                }, baseMoveSpeed);
+                            }
+                        });
+                        
+                        // AUTO-REMOVE ALL AFTER 8 SECONDS - IT'S IMPOSSIBLE!
+                        setTimeout(() => {
+                            console.log('8 seconds of chaos complete! Removing all popups...');
+                            // STOP AUDIO SPAM
+                            stopAudioSpam();
+                            
+                            spawnedPopups.forEach(pd => {
+                                if (pd.element && pd.interval) {
+                                    clearInterval(pd.interval);
+                                    pd.element.remove();
+                                }
+                            });
+                            allPopups = [];
+                        }, 8000);
+                        
+                        return; // Don't continue to removal code
+                    }
+                    
+                    // If it's the original but NOT the 4th click yet, just move it
+                    if (isOriginal && globalClickCount < clicksToMultiply) {
+                        // Play click sound once
+                        playClickSound();
+                        movePopupToRandom(popup);
+                        return; // Don't remove it
+                    }
+                    
+                    // For non-original popups, remove them when clicked
+                    if (!isOriginal) {
+                        // Play click sound once
+                        playClickSound();
+                        
+                        // Make movements faster with each click
+                        baseMoveSpeed = Math.max(300, baseMoveSpeed - 100);
+                        
+                        // Update all popups to new speed
+                        allPopups.forEach(pd => {
+                            if (pd.element && pd.interval) {
+                                clearInterval(pd.interval);
+                                pd.interval = setInterval(() => {
+                                    movePopupToRandom(pd.element);
+                                }, baseMoveSpeed);
+                            }
+                        });
+                        
+                        // Remove this specific popup
+                        clearInterval(popupData.interval);
+                        popup.remove();
+                        
+                        // Remove from array
+                        allPopups = allPopups.filter(pd => pd.element !== popup);
+                        
+                        // If all popups are gone, we're done!
+                        if (allPopups.length === 0) {
+                            console.log('Finally! You clicked them all!');
+                        }
+                    }
+                });
+                
+                return popupData;
+            }
+            
+            // Function to move popup to random position
+            function movePopupToRandom(popup) {
+                const maxX = window.innerWidth - 150;
+                const maxY = window.innerHeight - 150;
+                const x = Math.random() * maxX;
+                const y = Math.random() * maxY;
+                
+                popup.style.left = Math.max(0, x) + 'px';
+                popup.style.top = Math.max(0, y) + 'px';
+                
+                // Random rotation for extra chaos
+                const rotation = (Math.random() - 0.5) * 30;
+                popup.style.transform = `rotate(${rotation}deg)`;
+            }
+            
+            // Remove the original static popup and create the interactive one
+            const originalPopup = document.getElementById('clicktwin-popup');
+            if (originalPopup) {
+                originalPopup.remove();
+            }
+            
+            // Create the first popup
+            createPopup(true);
+        })();
+    </script>
+</body>
+</html>
