@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bird Talk - INFINITE ARCHIVE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        body {
+            font-family: Verdana, Arial, sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            overflow: hidden;
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            touch-action: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        #game-container {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh; /* Dynamic viewport height for mobile */
+            position: relative;
+            background-image: url('birdbedroom.png');
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+        
+        #bird {
+            position: absolute;
+            left: 50%;
+            bottom: 150px;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 200px;
+            cursor: pointer;
+        }
+        
+        #bird img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        #berries-container {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .berry {
+            width: 80px;
+            height: 80px;
+            cursor: grab;
+            transition: transform 0.2s;
+        }
+        
+        .berry:active {
+            cursor: grabbing;
+        }
+        
+        .berry.dragging {
+            opacity: 0.5;
+        }
+        
+        .berry.used {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        .berry img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        #ui-panel {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.9);
+            border-top: 3px solid #ff6600;
+            padding: 15px;
+        }
+        
+        #stats {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .stat {
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .stat-label {
+            color: #ff6600;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        
+        .stat-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #1a1a1a;
+            border: 2px solid #ff6600;
+            position: relative;
+        }
+        
+        .stat-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff3300 0%, #ff6600 100%);
+            transition: width 0.3s;
+        }
+        
+        .stat-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 10px;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 1px 1px #000000;
+        }
+        
+        #mood-display {
+            color: #ffff00;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 5px 10px;
+            background-color: #2a2a2a;
+            border: 2px solid #ff6600;
+            display: inline-block;
+        }
+        
+        #speech-bubble {
+            position: absolute;
+            bottom: 380px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.95);
+            color: #000000;
+            padding: 15px 20px;
+            border-radius: 15px;
+            border: 3px solid #ff6600;
+            max-width: 400px;
+            font-size: 14px;
+            display: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        #speech-bubble.show {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; bottom: 370px; }
+            to { opacity: 1; bottom: 380px; }
+        }
+        
+        #input-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        #player-input {
+            flex: 1;
+            background-color: #1a1a1a;
+            border: 2px solid #ff6600;
+            color: #ffffff;
+            padding: 8px;
+            font-family: Verdana, Arial, sans-serif;
+            font-size: 12px;
+            touch-action: manipulation;
+        }
+        
+        #send-btn {
+            background-color: #ff6600;
+            color: white;
+            padding: 8px 20px;
+            border: 2px solid #ff3300;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+        
+        #send-btn:hover {
+            background-color: #ff3300;
+        }
+        
+        #back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #ff6600;
+            color: white;
+            padding: 8px 20px;
+            border: 2px solid #ff3300;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+        
+        #back-btn:hover {
+            background-color: #ff3300;
+        }
+        
+        #tts-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            cursor: pointer;
+        }
+        
+        #tts-overlay.hidden {
+            display: none;
+        }
+        
+        #tts-enable-btn {
+            background-color: #ff6600;
+            color: white;
+            padding: 20px 40px;
+            border: 3px solid #ff3300;
+            font-weight: bold;
+            font-size: 18px;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 102, 0, 0.5);
+        }
+        
+        #tts-enable-btn:hover {
+            background-color: #ff3300;
+        }
+        
+        @media screen and (max-width: 768px) {
+            #bird {
+                width: 150px;
+                height: 150px;
+                bottom: 140px;
+            }
+            
+            #berries-container {
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                gap: 10px;
+            }
+            
+            .berry {
+                width: 60px;
+                height: 60px;
+            }
+            
+            #speech-bubble {
+                max-width: 70%;
+                font-size: 12px;
+                padding: 10px 15px;
+                bottom: 320px;
+            }
+            
+            #ui-panel {
+                padding: 10px;
+            }
+            
+            #back-btn {
+                padding: 6px 12px;
+                font-size: 10px;
+                top: 10px;
+                left: 10px;
+            }
+            
+            #input-container {
+                display: flex;
+                gap: 8px;
+                margin-top: 10px;
+                width: 100%;
+            }
+            
+            #player-input {
+                flex: 1;
+                font-size: 16px;
+                padding: 10px;
+                min-width: 0;
+            }
+            
+            #send-btn {
+                padding: 10px 15px;
+                font-size: 10px;
+                flex-shrink: 0;
+                white-space: nowrap;
+            }
+            
+            .stat-label {
+                font-size: 10px;
+            }
+            
+            .stat-bar {
+                height: 20px;
+            }
+            
+            .stat-text {
+                font-size: 10px;
+            }
+            
+            #mood-display {
+                font-size: 11px;
+                padding: 4px 8px;
+            }
+            
+            #stats {
+                gap: 15px;
+                margin-bottom: 10px;
+            }
+            
+            .stat {
+                min-width: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="tts-overlay">
+        <div id="tts-enable-btn">TAP TO ENABLE AUDIO</div>
+    </div>
+    
+    <div id="game-container">
+        <a href="games.html" id="back-btn">← Back</a>
+        
+        <div id="bird">
+            <img id="bird-sprite" src="talk.png" alt="Bird">
+        </div>
+        
+        <div id="berries-container">
+            <div class="berry" draggable="true" data-berry="berry">
+                <img src="berry.png" alt="Berry 1">
+            </div>
+            <div class="berry" draggable="true" data-berry="berry2">
+                <img src="berry2.png" alt="Berry 2">
+            </div>
+            <div class="berry" draggable="true" data-berry="berry3">
+                <img src="berry3.png" alt="Berry 3">
+            </div>
+        </div>
+        
+        <div id="speech-bubble"></div>
+        
+        <div id="ui-panel">
+            <div id="stats">
+                <div class="stat">
+                    <div class="stat-label">Hunger</div>
+                    <div class="stat-bar">
+                        <div class="stat-fill" id="hunger-fill"></div>
+                        <div class="stat-text" id="hunger-text">100</div>
+                    </div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Mood</div>
+                    <div id="mood-display">CONTENT</div>
+                </div>
+            </div>
+            <div id="input-container">
+                <input type="text" id="player-input" placeholder="Say something to the bird...">
+                <button id="send-btn">Send</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Game State
+        const gameState = {
+            hunger: 30,
+            mood: 'hungry',
+            isTalking: false,
+            lastFedTime: Date.now()
+        };
+        
+        // Mood thresholds
+        const MOODS = {
+            starving: { min: 0, max: 20, name: 'STARVING' },
+            hungry: { min: 21, max: 40, name: 'HUNGRY' },
+            content: { min: 41, max: 60, name: 'CONTENT' },
+            happy: { min: 61, max: 80, name: 'HAPPY' },
+            enlightened: { min: 81, max: 100, name: 'ENLIGHTENED' }
+        };
+        
+        // Lexicon by mood
+        const LEXICON = {
+            starving: [
+                "bro twin bro pleaswe twin bro please twin bro man twin man twin man twin man food twin man",
+                "i need food twin i am going to die twin oh my god twin oooowwwwwwwwwww ooooooowwwwwwwwww twin oooooooowwwwwwwwww twin owwwwwwwwwwwwwwww",
+                "twin help me please io see the light  twin im on my last breath twin i can see the other side twin help twin",
+                "if you do not feed me i will die a slow and painful death twin, why are you doing this to me twin, please twin just put me out of my misery if you are going to do this twin",
+                "twin i am not joking twin i need food please twin i need food",
+                "if you dont feed me i am going to die twin",
+                "I NEEEEEEEED FOOD TWIN I NEED FOOD TWIN I NEED FOOD TWIN"
+            ],
+            hungry: [
+                "aye man food man feed me man",
+                "where the food",
+                "i need food twin",
+                "I'm hungry twin",
+                "man man man i want food twin man man man",
+                "food food food food food food",
+                "i want a berry man please man please man please"
+            ],
+            content: [
+                "im all good man please man im all good man stop man",
+                "you gave me food twin thanks twin fr twin thank you twin",
+                "hey man yeah food man hey food good food nice man",
+                "aight cool man haha yeah man",
+                "aye haha yeah man haha good food man",
+                "i am all good fr man haha yeah man all good man thank you man",
+                "you are a good person twin"
+            ],
+            happy: [
+                "im happy twin haha yeah twin im happy",
+                "man i need bird food man bird game man food man",
+                "you make me happy twin",
+                "bird game studios please hire me",
+                "you are my bro haha haha haha haha ",
+                "i love this bird room man i love it here this lil bird room man",
+                "i am not angry"
+            ],
+            enlightened: [
+                "hey twin what if bird game is a psychological operation birds being used by proxy twin",
+                "life tiwn fr twin life twin",
+                "I swear twin i really do love this lil bird room twin i wonder whats outside the walls twin",
+                "time isnt real twin",
+                "what if we all are connected in some weird way twin like on some domino shit twin fr twin haha haha im just playing twin ha ha ",
+                "the love for money is evil twin for eal twin i read that in a book tiwn haha ha ha ha im just playing twin ha",
+                "I ain't even a bird if imma be real with you twin ha ha ha aye sike twin im playin again ha ha ha silly jokes n shit twin ha ha ha ha twin",
+                "I seen the truth and it look just like the east side",
+                "why do we remember dreams twin?"
+            ]
+        };
+        
+        // Keyword responses
+        const KEYWORDS = {
+            positive: ['love', 'good', 'nice', 'beautiful', 'kind', 'sweet', 'friend', 'amazing', 'wonderful', 'great'],
+            negative: ['bad', 'ugly', 'mean', 'hate', 'stupid', 'dumb', 'awful'],
+            food: ['food', 'seed', 'berry', 'eat', 'feed', 'hungry', 'snack'],
+            existential: ['why', 'meaning', 'life', 'death', 'exist', 'consciousness', 'think', 'philosophy']
+        };
+        
+        // Elements
+        const birdSprite = document.getElementById('bird-sprite');
+        const bird = document.getElementById('bird');
+        const hungerFill = document.getElementById('hunger-fill');
+        const hungerText = document.getElementById('hunger-text');
+        const moodDisplay = document.getElementById('mood-display');
+        const speechBubble = document.getElementById('speech-bubble');
+        const playerInput = document.getElementById('player-input');
+        const sendBtn = document.getElementById('send-btn');
+        const berries = document.querySelectorAll('.berry');
+        
+        // Initialize
+        updateUI();
+        
+        // Prevent scroll and zoom on mobile
+        document.addEventListener('touchmove', (e) => {
+            // Allow touch on input field and dragging berries
+            if (e.target.id !== 'player-input' && !e.target.closest('.berry') && !isDragging) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+        
+        document.addEventListener('gesturestart', (e) => {
+            e.preventDefault();
+        });
+        
+        document.addEventListener('gesturechange', (e) => {
+            e.preventDefault();
+        });
+        
+        document.addEventListener('gestureend', (e) => {
+            e.preventDefault();
+        });
+        
+        // TTS Enable Overlay
+        const ttsOverlay = document.getElementById('tts-overlay');
+        let ttsEnabled = false;
+        
+        ttsOverlay.addEventListener('click', () => {
+            // Initialize TTS with user interaction
+            window.speechSynthesis.cancel();
+            const testUtterance = new SpeechSynthesisUtterance('');
+            window.speechSynthesis.speak(testUtterance);
+            
+            ttsEnabled = true;
+            ttsOverlay.classList.add('hidden');
+        });
+        
+        // Hunger drain over time
+        setInterval(() => {
+            gameState.hunger = Math.max(0, gameState.hunger - 2);
+            updateUI();
+            
+            // Random spontaneous speech
+            if (Math.random() < 0.05) {
+                birdSpontaneousSpeech();
+            }
+        }, 1000);
+        
+        // Update mood based on hunger
+        function updateMood() {
+            for (let mood in MOODS) {
+                if (gameState.hunger >= MOODS[mood].min && gameState.hunger <= MOODS[mood].max) {
+                    gameState.mood = mood;
+                    break;
+                }
+            }
+        }
+        
+        // Update UI
+        function updateUI() {
+            updateMood();
+            hungerFill.style.width = gameState.hunger + '%';
+            hungerText.textContent = Math.round(gameState.hunger);
+            moodDisplay.textContent = MOODS[gameState.mood].name;
+            
+            // Color code hunger bar
+            if (gameState.hunger <= 20) {
+                hungerFill.style.background = 'linear-gradient(90deg, #cc0000 0%, #ff0000 100%)';
+            } else if (gameState.hunger <= 40) {
+                hungerFill.style.background = 'linear-gradient(90deg, #ff6600 0%, #ffaa00 100%)';
+            } else {
+                hungerFill.style.background = 'linear-gradient(90deg, #ff3300 0%, #ff6600 100%)';
+            }
+        }
+        
+        // Bird speaks
+        function birdSpeak(text) {
+            if (gameState.isTalking) return;
+            
+            speechBubble.textContent = text;
+            speechBubble.classList.add('show');
+            
+            // Animate bird
+            gameState.isTalking = true;
+            animateBird();
+            
+            // Stop any existing speech (iOS requires this)
+            window.speechSynthesis.cancel();
+            
+            // Create and speak utterance
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 1.2;
+            utterance.pitch = 1.5;
+            
+            utterance.onend = () => {
+                setTimeout(() => {
+                    speechBubble.classList.remove('show');
+                    gameState.isTalking = false;
+                    birdSprite.src = 'talk.png';
+                }, 1000);
+            };
+            
+            window.speechSynthesis.speak(utterance);
+        }
+        
+        // Animate bird talking
+        let talkInterval;
+        function animateBird() {
+            let toggle = false;
+            talkInterval = setInterval(() => {
+                birdSprite.src = toggle ? 'talk.png' : 'talktwo.png';
+                toggle = !toggle;
+            }, 200);
+            
+            setTimeout(() => {
+                clearInterval(talkInterval);
+                birdSprite.src = 'talk.png';
+            }, 3000);
+        }
+        
+        // Random speech
+        function birdSpontaneousSpeech() {
+            const phrases = LEXICON[gameState.mood];
+            const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+            birdSpeak(randomPhrase);
+        }
+        
+        // Player sends message
+        function handlePlayerMessage() {
+            const message = playerInput.value.trim().toLowerCase();
+            if (!message) return;
+            
+            playerInput.value = '';
+            
+            // Check keywords
+            let response = '';
+            
+            if (KEYWORDS.positive.some(word => message.includes(word))) {
+                if (gameState.mood === 'enlightened') {
+                    response = "food, the food of the gods and heavens, the life of all is now twin. we will cease to exist for a breif moment before we wake up twin. what im trying to say is... thanks for the food twin.";
+                } else if (gameState.mood === 'happy') {
+                    response = "yeah keep talkin nice like that";
+                } else {
+                    response = "good looks I heard you";
+                }
+            } else if (KEYWORDS.negative.some(word => message.includes(word))) {
+                if (gameState.mood === 'starving') {
+                    response = "just feed me you talkin too much";
+                } else {
+                    response = "you got all that to say but no berries crazy";
+                }
+            } else if (KEYWORDS.food.some(word => message.includes(word))) {
+                if (gameState.hunger < 50) {
+                    response = "yes bro I'm tryna eat right now";
+                } else {
+                    response = "I'm full chill out";
+                }
+            } else if (KEYWORDS.existential.some(word => message.includes(word))) {
+                if (gameState.mood === 'enlightened') {
+                    response = "you start askin that then you never stop askin that";
+                } else if (gameState.mood === 'happy') {
+                    response = "I ain't gon lie I be thinkin bout that too";
+                } else {
+                    response = "bro why is you askin me that";
+                }
+            } else {
+                const phrases = LEXICON[gameState.mood];
+                response = phrases[Math.floor(Math.random() * phrases.length)];
+            }
+            
+            birdSpeak(response);
+        }
+        
+        // Event listeners
+        sendBtn.addEventListener('click', handlePlayerMessage);
+        playerInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handlePlayerMessage();
+        });
+        
+        bird.addEventListener('click', () => {
+            birdSpontaneousSpeech();
+        });
+        
+        // Drag and drop for berries with visual dragging
+        let draggedBerry = null;
+        let dragClone = null;
+        let isDragging = false;
+        let originalPosition = { x: 0, y: 0 };
+        
+        berries.forEach(berry => {
+            berry.addEventListener('mousedown', startDrag);
+            berry.addEventListener('touchstart', startDrag);
+        });
+        
+        function startDrag(e) {
+            const berry = e.currentTarget;
+            if (berry.classList.contains('used')) return;
+            
+            e.preventDefault();
+            isDragging = true;
+            draggedBerry = berry;
+            
+            // Store original position
+            const rect = berry.getBoundingClientRect();
+            originalPosition = { x: rect.left, y: rect.top };
+            
+            // Create clone for dragging
+            dragClone = berry.cloneNode(true);
+            dragClone.style.position = 'fixed';
+            dragClone.style.pointerEvents = 'none';
+            dragClone.style.zIndex = '1000';
+            dragClone.style.width = rect.width + 'px';
+            dragClone.style.height = rect.height + 'px';
+            dragClone.style.transition = 'none';
+            document.body.appendChild(dragClone);
+            
+            // Make original semi-transparent
+            berry.style.opacity = '0.3';
+            
+            // Initial position
+            const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+            const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+            dragClone.style.left = (clientX - rect.width / 2) + 'px';
+            dragClone.style.top = (clientY - rect.height / 2) + 'px';
+        }
+        
+        document.addEventListener('mousemove', onDrag);
+        document.addEventListener('touchmove', onDrag);
+        
+        function onDrag(e) {
+            if (!isDragging || !dragClone) return;
+            
+            const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+            const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+            
+            const rect = dragClone.getBoundingClientRect();
+            dragClone.style.left = (clientX - rect.width / 2) + 'px';
+            dragClone.style.top = (clientY - rect.height / 2) + 'px';
+        }
+        
+        document.addEventListener('mouseup', endDrag);
+        document.addEventListener('touchend', endDrag);
+        
+        function endDrag(e) {
+            if (!isDragging) return;
+            
+            const clientX = e.type.includes('touch') ? e.changedTouches[0].clientX : e.clientX;
+            const clientY = e.type.includes('touch') ? e.changedTouches[0].clientY : e.clientY;
+            
+            // Check if dropped on bird
+            const birdRect = bird.getBoundingClientRect();
+            if (clientX >= birdRect.left && clientX <= birdRect.right &&
+                clientY >= birdRect.top && clientY <= birdRect.bottom) {
+                feedBird(draggedBerry);
+            }
+            
+            // Cleanup
+            if (dragClone) {
+                dragClone.remove();
+                dragClone = null;
+            }
+            if (draggedBerry) {
+                draggedBerry.style.opacity = '1';
+                draggedBerry = null;
+            }
+            isDragging = false;
+        }
+        
+        // Feed the bird
+        function feedBird(berry) {
+            berry.classList.add('used');
+            
+            // Increase hunger
+            gameState.hunger = Math.min(100, gameState.hunger + 25);
+            updateUI();
+            
+            // Animate eating
+            animateBird();
+            
+            // Response based on mood
+            let response = '';
+            if (gameState.mood === 'starving') {
+                response = "twin i needed this food twin you gave me the food twin i am grateful twin i am thankful twin words do not amount to what i am feeling twin you are a good person twin i love you twin i ate the food twin but i will eventually want more twin why does it work like this twin why cant this thankfulness be everlasting twin why cant it ever be truly satisfied why twin is this a curse twin how can such a gift of gratefulness be a curse hahahahahahaha twin im just joking twin thanks for the food twin";
+            } else if (gameState.mood === 'hungry') {
+                response = "i eat this food at long last... not quite the long last of near death... but the lasting stance of where death has never been near... this stance makes the taste of the food ... great.. amazing... lasting... fleeting... standing still in an oasis of something that never was but somehow can be... what im trying to say is.. thanks for the food twin.";
+            } else if (gameState.mood === 'content') {
+                response = "thanks for the food twin";
+            } else if (gameState.mood === 'happy') {
+                response = "food, as i eat this food i reflect on the world around me, this room... this small bird room... the walls i have never left... i taste this food and see the outside world... the smells of a new day... the light of will... free will... what is it that this taste brings twin.. this food twin... well twin.. wha tim trying to say is... thanks for the food twin";
+            } else {
+                // enlightened
+                response = "food, the food of the gods and heavens, the life of all is now twin. we will cease to exist for a breif moment before we wake up twin. what im trying to say is... thanks for the food twin.";
+            }
+            
+            birdSpeak(response);
+            
+            // Respawn berry after 10 seconds
+            setTimeout(() => {
+                berry.classList.remove('used');
+            }, 10000);
+        }
+    </script>
+</body>
+</html>
