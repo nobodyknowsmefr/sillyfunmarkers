@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/png" href="favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>INFINITE ARCHIVE - BLOG</title>
@@ -347,7 +348,6 @@
                     <div class="blog-post-meta">
                         <span>Posted: October 15, 2005</span>
                         <span>By: admin</span>
-                        <span>Comments: 47</span>
                     </div>
                 </div>
                 <div class="blog-post-content">
@@ -357,8 +357,7 @@
                     <p>will update when i get more info. peace.</p>
                 </div>
                 <div class="blog-post-footer">
-                    <a href="#comments">Read Comments (47)</a>
-                    <a href="#share">Share This</a>
+                    <a href="#" class="share-link">Share This</a>
                     <span style="float: right;">Views: 2,847</span>
                 </div>
             </div>
@@ -370,7 +369,6 @@
                     <div class="blog-post-meta">
                         <span>Posted: October 12, 2005</span>
                         <span>By: Dontayvious</span>
-                        <span>Comments: 193</span>
                     </div>
                 </div>
                 <div class="blog-post-content">
@@ -386,8 +384,7 @@
                     <p>trust the process yall. call me or pull up to the shop if you need in person advice, i always got u... open 24 hours...</p>
                 </div>
                 <div class="blog-post-footer">
-                    <a href="#comments">Read Comments (193)</a>
-                    <a href="#share">Share This</a>
+                    <a href="#" class="share-link">Share This</a>
                     <span style="float: right;">Views: 8,291</span>
                 </div>
             </div>
@@ -399,7 +396,6 @@
                     <div class="blog-post-meta">
                         <span>Posted: October 8, 2005</span>
                         <span>By: admin</span>
-                        <span>Comments: 312</span>
                     </div>
                 </div>
                 <div class="blog-post-content">
@@ -410,8 +406,7 @@
                     <p>RIP to the duo 2002-2005</p>
                 </div>
                 <div class="blog-post-footer">
-                    <a href="#comments">Read Comments (312)</a>
-                    <a href="#share">Share This</a>
+                    <a href="#" class="share-link">Share This</a>
                     <span style="float: right;">Views: 15,482</span>
                 </div>
             </div>
@@ -423,7 +418,6 @@
                     <div class="blog-post-meta">
                         <span>Posted: October 3, 2005</span>
                         <span>By: admin</span>
-                        <span>Comments: 89</span>
                     </div>
                 </div>
                 <div class="blog-post-content">
@@ -435,8 +429,7 @@
                     <p>good times yall...</p>
                 </div>
                 <div class="blog-post-footer">
-                    <a href="#comments">Read Comments (89)</a>
-                    <a href="#share">Share This</a>
+                    <a href="#" class="share-link">Share This</a>
                     <span style="float: right;">Views: 6,734</span>
                 </div>
             </div>
@@ -448,7 +441,6 @@
                     <div class="blog-post-meta">
                         <span>Posted: October 18, 2005</span>
                         <span>By: admin</span>
-                        <span>Comments: 521</span>
                     </div>
                 </div>
                 <div class="blog-post-content">
@@ -464,8 +456,7 @@
                     <p><strong>CHECK OUT LEON KNIGHT:</strong> <a href="https://linktr.ee/Leonknight?fbclid=PAZXh0bgNhZW0CMTEAAafDuRdMkApJe2MrMZ3ErOI0QUKGoVfGT-zaFbja5YLt3vf2f-yRyPl7QFceSA_aem_S-ao4C6dyqDFJM1TfFLJUw" target="_blank">https://linktr.ee/Leonknight</a></p>
                 </div>
                 <div class="blog-post-footer">
-                    <a href="#comments">Read Comments (521)</a>
-                    <a href="#share">Share This</a>
+                    <a href="#" class="share-link">Share This</a>
                     <span style="float: right;">Views: 23,104</span>
                 </div>
             </div>
@@ -477,5 +468,28 @@
     <div id="footer">
         © 2005 INFINITE ARCHIVE 
     </div>
+    <script>
+    document.querySelectorAll('.share-link').forEach(link => {
+      link.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        const postElement = this.closest('.blog-post');
+        const title = postElement.querySelector('.blog-post-title')?.innerText || 'Check this out!';
+        const url = window.location.href.split('#')[0]; // current page URL
+
+        if (navigator.share) {
+          navigator.share({
+            title: 'INFINITE ARCHIVE',
+            text: title,
+            url: url
+          }).catch(err => {
+            console.warn('Share canceled or failed:', err);
+          });
+        } else {
+          alert('Sharing not supported on this browser.');
+        }
+      });
+    });
+    </script>
 </body>
 </html>
