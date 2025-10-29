@@ -231,6 +231,12 @@
         
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
+
+                // Detect if device is mobile
+        function isMobile() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+                || (window.innerWidth <= 768);
+        }
         
         // Game state
         let seeds = [];
@@ -742,7 +748,9 @@
             bird.targetY = (clientY - rect.top) * (canvas.height / rect.height);
             
             // Prevent bird from going too close to the ground (minimum 200px from bottom - STAY HIGH!)
-            const groundLimit = canvas.height - 200;
+            // Prevent bird from going too close to the ground
+            // Mobile: 80px from bottom (easier), Desktop: 200px from bottom (harder)
+            const groundLimit = isMobile() ? canvas.height - 80 : canvas.height - 200;
             if (bird.targetY > groundLimit) {
                 bird.targetY = groundLimit;
             }
@@ -1125,3 +1133,4 @@
 </body>
 
 </html>
+
