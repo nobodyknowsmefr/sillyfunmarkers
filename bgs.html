@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bird Game Studios</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Verdana, Arial, sans-serif;
+            background-color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .ripple-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .ripple {
+            position: absolute;
+            border: 2px solid rgba(200, 200, 200, 0.6);
+            border-radius: 50%;
+            animation: ripple-expand 3s ease-out forwards;
+        }
+        
+        @keyframes ripple-expand {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 0.8;
+                transform: translate(-50%, -50%);
+            }
+            100% {
+                width: 300px;
+                height: 300px;
+                opacity: 0;
+                transform: translate(-50%, -50%);
+            }
+        }
+        
+        .logo-container {
+            text-align: center;
+            z-index: 1;
+            position: relative;
+        }
+        
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            color: #1a1a1a;
+            text-decoration: none;
+            z-index: 10;
+        }
+        
+        .home-button:hover {
+            color: #666666;
+        }
+        
+        .logo-container img {
+            max-width: 400px;
+            width: 90%;
+            height: auto;
+            position: relative;
+            left: 13px;    /* adjust this: negative = left, positive = right */
+            top: 0px;     /* adjust this: negative = up, positive = down */
+        }
+        
+        .message {
+            color: #1a1a1a;
+            font-size: 14px;
+            margin-top: 30px;
+            max-width: 500px;
+            line-height: 1.6;
+            text-align: center;
+            font-style: italic;
+            font-family: 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+            position: relative;
+            left: 40px;    /* adjust this: negative = left, positive = right */
+            top: 0px;     /* adjust this: negative = up, positive = down */
+        }
+        
+        .coming-soon {
+            color: #666666;
+            font-size: 14px;
+            margin-top: 20px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            animation: pulse 2s ease-in-out infinite;
+            font-family: Verdana, Arial, sans-serif;
+            position: relative;
+            left: 0px;    /* adjust this: negative = left, positive = right */
+            top: 0px;     /* adjust this: negative = up, positive = down */
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="home-button">HOME</a>
+    <div class="ripple-container" id="rippleContainer"></div>
+    <div class="logo-container">
+        <img src="bgs.png" alt="Bird Game Studios">
+        <p class="message">Bird Game Studios is now publicly tradable.... Our developers at the Bird Game Studios Web Department are hard at work at the first evolution of this page....</p>
+        <p class="coming-soon">HmVdfWvNG7v1KAjPnUEUFFfJyzifAtyzxDfxCqAgBXy1</p>
+    </div>
+    
+    <script>
+        function createRipple() {
+            const container = document.getElementById('rippleContainer');
+            const ripple = document.createElement('div');
+            ripple.className = 'ripple';
+            
+            // Random position
+            ripple.style.left = Math.random() * 100 + '%';
+            ripple.style.top = Math.random() * 100 + '%';
+            
+            container.appendChild(ripple);
+            
+            // Remove ripple after animation completes
+            setTimeout(() => {
+                ripple.remove();
+            }, 3000);
+        }
+        
+        // Create ripples at random intervals
+        function scheduleRipple() {
+            createRipple();
+            // Random interval between 200ms and 800ms
+            const nextDelay = 200 + Math.random() * 600;
+            setTimeout(scheduleRipple, nextDelay);
+        }
+        
+        // Start the ripples
+        scheduleRipple();
+    </script>
+</body>
+</html>
