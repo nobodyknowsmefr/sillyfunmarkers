@@ -19,7 +19,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            overflow-x: hidden;
             position: relative;
         }
         
@@ -31,6 +31,7 @@
             height: 100%;
             pointer-events: none;
             z-index: 0;
+            overflow: hidden;
         }
         
         .ripple {
@@ -59,6 +60,9 @@
             text-align: center;
             z-index: 1;
             position: relative;
+            padding: 20px;
+            width: 100%;
+            max-width: 600px;
         }
         
         .home-button {
@@ -80,9 +84,6 @@
             max-width: 400px;
             width: 90%;
             height: auto;
-            position: relative;
-            left: 13px;    /* adjust this: negative = left, positive = right */
-            top: 0px;     /* adjust this: negative = up, positive = down */
         }
         
         .message {
@@ -90,13 +91,12 @@
             font-size: 14px;
             margin-top: 30px;
             max-width: 500px;
+            width: 100%;
             line-height: 1.6;
             text-align: center;
             font-style: italic;
             font-family: 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
-            position: relative;
-            left: 40px;    /* adjust this: negative = left, positive = right */
-            top: 0px;     /* adjust this: negative = up, positive = down */
+            padding: 0 20px;
         }
         
         .coming-soon {
@@ -107,9 +107,8 @@
             letter-spacing: 4px;
             animation: pulse 2s ease-in-out infinite;
             font-family: Verdana, Arial, sans-serif;
-            position: relative;
-            left: 0px;    /* adjust this: negative = left, positive = right */
-            top: 0px;     /* adjust this: negative = up, positive = down */
+            word-break: break-all;
+            padding: 0 20px;
         }
         
         @keyframes pulse {
@@ -118,6 +117,32 @@
             }
             50% {
                 opacity: 1;
+            }
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 480px) {
+            .logo-container img {
+                width: 85%;
+                max-width: 300px;
+            }
+            
+            .message {
+                font-size: 13px;
+                margin-top: 25px;
+                padding: 0 15px;
+            }
+            
+            .coming-soon {
+                font-size: 11px;
+                letter-spacing: 2px;
+                padding: 0 15px;
+            }
+            
+            .home-button {
+                top: 15px;
+                left: 15px;
+                font-size: 12px;
             }
         }
     </style>
