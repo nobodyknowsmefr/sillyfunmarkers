@@ -365,6 +365,7 @@
             -webkit-appearance: none;
             appearance: none;
             width: 70px;
+            touch-action: auto;
             height: 2px;
             background: 
                 repeating-linear-gradient(
@@ -944,6 +945,10 @@
         }, { passive: true });
         
         window.addEventListener('touchmove', (e) => {
+            // Don't block touch on sliders and inputs
+            if (e.target.tagName === 'INPUT' || e.target.classList.contains('brush-slider')) {
+                return;
+            }
             if (isInCarousel) {
                 e.preventDefault();
             }
