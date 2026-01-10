@@ -5,99 +5,97 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <title>Countdown</title>
+    <title>Blind Box Bird Box</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
-            overflow: hidden;
-            background: #fff;
-            font-family: 'Times New Roman', serif;
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            -webkit-overflow-scrolling: none;
-        }
-
-        canvas {
-            display: block;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1;
-            touch-action: none;
-            background: #fff;
-        }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            width: 100dvw;
+            min-height: 100vh;
+            min-height: 100dvh;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            z-index: 10;
-            pointer-events: none;
-            transform: translateX(-20px);
+            align-items: center;
+            background-color: #fff;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            padding: 20px 0;
+            -webkit-overflow-scrolling: touch;
         }
-
-        .countdown {
-            font-size: clamp(2rem, 8vw, 5rem);
-            color: #111;
-            letter-spacing: 0.05em;
-            text-align: center;
-            font-weight: 400;
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 60px 0 80px 0;
+            }
         }
-
-        .announcement {
-            font-size: 14px;
-            color: #333;
-            max-width: 500px;
-            text-align: center;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            font-style: italic;
-            padding: 0 20px;
+        
+        .centered-image {
+            max-width: 90vw;
+            max-width: 90dvw; /* Dynamic viewport for mobile browsers */
+            max-height: 90vh;
+            max-height: 90dvh; /* Dynamic viewport for mobile browsers */
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent;
         }
-
-        .crosshair {
-            height: 225px;
-            margin-bottom: 25px;
-            opacity: 0.8;
+        
+        /* Mobile-specific adjustments */
+        @media (max-width: 768px) and (orientation: portrait) {
+            .centered-image {
+                max-width: 95vw;
+                max-width: 95dvw;
+                max-height: 70vh;
+                max-height: 70dvh;
+            }
         }
-
-        .countdown-label {
-            font-size: clamp(0.7rem, 1.5vw, 0.9rem);
-            color: #666;
-            margin-top: 15px;
-            letter-spacing: 0.2em;
-            font-style: italic;
+        
+        @media (max-width: 768px) and (orientation: landscape) {
+            .centered-image {
+                max-width: 85vw;
+                max-width: 85dvw;
+                max-height: 80vh;
+                max-height: 80dvh;
+            }
         }
-
-        .code-text {
-            font-family: 'Arial', sans-serif;
-            font-size: 16px;
-            color: #000;
-            margin-top: 25px;
-            letter-spacing: 0.05em;
-            animation: blink 2s ease-in-out infinite;
-            pointer-events: all;
-            user-select: text;
-            cursor: text;
+        
+        /* Small mobile devices */
+        @media (max-width: 480px) {
+            .centered-image {
+                max-width: 98vw;
+                max-width: 98dvw;
+                max-height: 60vh;
+                max-height: 60dvh;
+            }
         }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
+        
+        /* Handle safe areas for notched devices */
+        @supports (padding: max(0px)) {
+            body {
+                padding-left: max(0px, env(safe-area-inset-left));
+                padding-right: max(0px, env(safe-area-inset-right));
+            }
+            
+            @media (max-width: 768px) {
+                body {
+                    padding-top: max(60px, calc(60px + env(safe-area-inset-top)));
+                    padding-bottom: max(80px, calc(80px + env(safe-area-inset-bottom)));
+                }
+            }
         }
-
+        
         .home-btn {
             position: fixed;
             top: 12px;
@@ -115,503 +113,90 @@
             text-transform: uppercase;
             padding: 10px;
         }
-
+        
         .home-btn:hover {
             color: #666;
         }
-
-        .logo {
-            position: fixed;
-            top: 15px;
-            left: 49.55%;
-            transform: translateX(-50%);
-            height: 250px;
-            z-index: 100;
-            opacity: 0.8;
-        }
-
+        
         @media (max-width: 600px) {
             .home-btn {
                 top: max(8px, env(safe-area-inset-top));
                 left: max(8px, env(safe-area-inset-left));
                 font-size: 10px;
             }
-
-            .logo {
-                height: 150px;
-                top: max(10px, env(safe-area-inset-top));
-            }
-
-            .countdown {
-                font-size: 2rem;
-            }
-
-            .announcement {
-                font-size: 12px;
-                max-width: 90%;
-                margin-bottom: 20px;
-            }
-
-            .crosshair {
-                height: 125px;
-                margin-bottom: 15px;
-            }
-
-            .overlay {
-                transform: translateX(-10px);
-            }
-
-            .countdown-label {
-                font-size: 0.7rem;
-            }
-
-            .code-text {
-                font-size: 12px;
-                word-break: break-all;
-                max-width: 90%;
+        }
+        
+        .image-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            max-width: 90vw;
+            padding: 20px 0;
+        }
+        
+        .image-container .centered-image {
+            max-width: 100%;
+            height: auto;
+            flex-shrink: 0;
+        }
+        
+        /* Adjust for mobile */
+        @media (max-width: 768px) and (orientation: portrait) {
+            .image-container {
+                max-width: 95vw;
+                gap: 15px;
             }
         }
-
+        
+        @media (max-width: 768px) and (orientation: landscape) {
+            .image-container {
+                max-width: 85vw;
+                flex-direction: row;
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .image-container {
+                max-width: 98vw;
+                gap: 10px;
+            }
+        }
+        
+        .code-text {
+            font-family: 'Arial', sans-serif;
+            font-size: 14px;
+            color: #000;
+            letter-spacing: 0.05em;
+            animation: pulse 2s ease-in-out infinite;
+            user-select: text;
+            cursor: text;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        @media (max-width: 600px) {
+            .code-text {
+                font-size: 11px;
+                max-width: 90%;
+                word-break: break-all;
+            }
+        }
     </style>
 </head>
 <body>
     <a href="index.html" class="home-btn">HOME</a>
-    
-    <img src="bgs.png" alt="BGS" class="logo">
-    
-    <canvas id="sandCanvas"></canvas>
-    
-    <div class="overlay">
-        <img src="crosshair.png" alt="" class="crosshair">
-        <div class="announcement">The re-release of the world renowned Blind Box Bird Box by the legendary Tokyo based creative director "otto" will be available to order at the end of this countdown... Thank you...</div>
-        <div class="countdown" id="countdown">00:00:00:00</div>
-        <div class="countdown-label">January 10th....</div>
+    <div class="image-container">
+        <img src="breaking.png" alt="Breaking" class="centered-image">
+        <img src="manu.png" alt="Manu" class="centered-image">
         <div class="code-text">HmVdfWvNG7v1KAjPnUEUFFfJyzifAtyzxDfxCqAgBXy1</div>
     </div>
-    
-
-
-    <script>
-        const canvas = document.getElementById('sandCanvas');
-        const ctx = canvas.getContext('2d');
-        
-        let width, height;
-        let cellSize;
-        let cols, rows;
-        let grid;
-        let nextGrid;
-        
-        function getCellSize() {
-            // Larger cells on mobile for better performance
-            return window.innerWidth < 600 ? 8 : 4;
-        }
-        
-        // Sand colors - subtle grays
-        const sandColors = [
-            '#ddd',
-            '#ccc',
-            '#bbb',
-            '#d5d5d5',
-            '#c5c5c5',
-            '#e0e0e0',
-            '#b8b8b8',
-            '#d0d0d0'
-        ];
-        
-        function resize() {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
-            
-            cellSize = getCellSize();
-            cols = Math.floor(width / cellSize);
-            rows = Math.floor(height / cellSize);
-            
-            // Preserve existing sand if possible
-            const oldGrid = grid;
-            const oldCols = cols;
-            
-            grid = new Array(cols * rows).fill(0);
-            nextGrid = new Array(cols * rows).fill(0);
-            
-            if (oldGrid) {
-                for (let i = 0; i < Math.min(oldGrid.length, grid.length); i++) {
-                    grid[i] = oldGrid[i];
-                }
-            }
-        }
-        
-        function getIndex(x, y) {
-            return y * cols + x;
-        }
-        
-        function inBounds(x, y) {
-            return x >= 0 && x < cols && y >= 0 && y < rows;
-        }
-        
-        function updateSand() {
-            nextGrid.fill(0);
-            
-            // Process from bottom to top
-            for (let y = rows - 1; y >= 0; y--) {
-                // Randomize left-right processing to avoid bias
-                const leftToRight = Math.random() > 0.5;
-                
-                for (let i = 0; i < cols; i++) {
-                    const x = leftToRight ? i : cols - 1 - i;
-                    const idx = getIndex(x, y);
-                    
-                    if (grid[idx] !== 0) {
-                        const below = getIndex(x, y + 1);
-                        const belowLeft = getIndex(x - 1, y + 1);
-                        const belowRight = getIndex(x + 1, y + 1);
-                        
-                        if (inBounds(x, y + 1) && grid[below] === 0 && nextGrid[below] === 0) {
-                            // Fall straight down
-                            nextGrid[below] = grid[idx];
-                        } else {
-                            // Try to fall diagonally
-                            const canLeft = inBounds(x - 1, y + 1) && grid[belowLeft] === 0 && nextGrid[belowLeft] === 0;
-                            const canRight = inBounds(x + 1, y + 1) && grid[belowRight] === 0 && nextGrid[belowRight] === 0;
-                            
-                            if (canLeft && canRight) {
-                                // Pick random direction
-                                if (Math.random() > 0.5) {
-                                    nextGrid[belowLeft] = grid[idx];
-                                } else {
-                                    nextGrid[belowRight] = grid[idx];
-                                }
-                            } else if (canLeft) {
-                                nextGrid[belowLeft] = grid[idx];
-                            } else if (canRight) {
-                                nextGrid[belowRight] = grid[idx];
-                            } else {
-                                // Stay in place
-                                nextGrid[idx] = grid[idx];
-                            }
-                        }
-                    }
-                }
-            }
-            
-            // Swap grids
-            [grid, nextGrid] = [nextGrid, grid];
-        }
-        
-        function render() {
-            ctx.fillStyle = '#fff';
-            ctx.fillRect(0, 0, width, height);
-            
-            for (let y = 0; y < rows; y++) {
-                for (let x = 0; x < cols; x++) {
-                    const idx = getIndex(x, y);
-                    if (grid[idx] !== 0) {
-                        ctx.fillStyle = sandColors[grid[idx] - 1];
-                        ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
-                    }
-                }
-            }
-        }
-        
-        // Mouse interaction - disturb sand on movement, pick up clumps on click
-        let lastMouseX = -1;
-        let lastMouseY = -1;
-        let isHolding = false;
-        let heldSand = []; // Array of {dx, dy, color} relative to cursor
-        
-        function disturbSand(mouseX, mouseY, isTouch = false) {
-            if (isHolding) return; // Don't disturb while holding
-            
-            const gridX = Math.floor(mouseX / cellSize);
-            const gridY = Math.floor(mouseY / cellSize);
-            const radius = isTouch ? 12 : 8; // Larger radius for touch
-            
-            for (let dy = -radius; dy <= radius; dy++) {
-                for (let dx = -radius; dx <= radius; dx++) {
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist <= radius) {
-                        const x = gridX + dx;
-                        const y = gridY + dy;
-                        if (inBounds(x, y)) {
-                            const idx = getIndex(x, y);
-                            if (grid[idx] !== 0) {
-                                // Push sand away from cursor
-                                const pushChance = 1 - (dist / radius);
-                                if (Math.random() < pushChance * 0.6) {
-                                    // Try to move sand in direction away from cursor
-                                    const pushX = dx === 0 ? (Math.random() > 0.5 ? 1 : -1) : (dx > 0 ? 1 : -1);
-                                    const pushY = -Math.floor(Math.random() * 3) - 1; // Push upward
-                                    
-                                    const newX = x + pushX;
-                                    const newY = y + pushY;
-                                    
-                                    if (inBounds(newX, newY)) {
-                                        const newIdx = getIndex(newX, newY);
-                                        if (grid[newIdx] === 0) {
-                                            grid[newIdx] = grid[idx];
-                                            grid[idx] = 0;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        
-        function pickUpSand(mouseX, mouseY, isTouch = false) {
-            const gridX = Math.floor(mouseX / cellSize);
-            const gridY = Math.floor(mouseY / cellSize);
-            const radius = isTouch ? 10 : 6; // Larger radius for touch
-            heldSand = [];
-            
-            for (let dy = -radius; dy <= radius; dy++) {
-                for (let dx = -radius; dx <= radius; dx++) {
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist <= radius) {
-                        const x = gridX + dx;
-                        const y = gridY + dy;
-                        if (inBounds(x, y)) {
-                            const idx = getIndex(x, y);
-                            if (grid[idx] !== 0) {
-                                // Pick up this grain
-                                heldSand.push({ dx, dy, color: grid[idx] });
-                                grid[idx] = 0;
-                            }
-                        }
-                    }
-                }
-            }
-            
-            isHolding = heldSand.length > 0;
-        }
-        
-        function dropSand(mouseX, mouseY) {
-            const gridX = Math.floor(mouseX / cellSize);
-            const gridY = Math.floor(mouseY / cellSize);
-            
-            for (const grain of heldSand) {
-                const x = gridX + grain.dx;
-                const y = gridY + grain.dy;
-                if (inBounds(x, y)) {
-                    const idx = getIndex(x, y);
-                    if (grid[idx] === 0) {
-                        grid[idx] = grain.color;
-                    } else {
-                        // Try to place nearby
-                        for (let attempts = 0; attempts < 10; attempts++) {
-                            const offsetX = Math.floor(Math.random() * 5) - 2;
-                            const offsetY = Math.floor(Math.random() * 5) - 2;
-                            const newX = x + offsetX;
-                            const newY = y + offsetY;
-                            if (inBounds(newX, newY)) {
-                                const newIdx = getIndex(newX, newY);
-                                if (grid[newIdx] === 0) {
-                                    grid[newIdx] = grain.color;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            
-            heldSand = [];
-            isHolding = false;
-        }
-        
-        function renderHeldSand(mouseX, mouseY) {
-            if (!isHolding) return;
-            
-            const gridX = Math.floor(mouseX / cellSize);
-            const gridY = Math.floor(mouseY / cellSize);
-            
-            for (const grain of heldSand) {
-                const x = gridX + grain.dx;
-                const y = gridY + grain.dy;
-                ctx.fillStyle = sandColors[grain.color - 1];
-                ctx.globalAlpha = 0.7;
-                ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
-            }
-            ctx.globalAlpha = 1;
-        }
-        
-        canvas.addEventListener('mousedown', (e) => {
-            pickUpSand(e.clientX, e.clientY);
-        });
-        
-        canvas.addEventListener('mousemove', (e) => {
-            lastMouseX = e.clientX;
-            lastMouseY = e.clientY;
-            if (!isHolding) {
-                disturbSand(e.clientX, e.clientY);
-            }
-        });
-        
-        canvas.addEventListener('mouseup', (e) => {
-            if (isHolding) {
-                dropSand(e.clientX, e.clientY);
-            }
-        });
-        
-        canvas.addEventListener('mouseleave', (e) => {
-            if (isHolding) {
-                dropSand(e.clientX, e.clientY);
-            }
-            lastMouseX = -1;
-            lastMouseY = -1;
-        });
-        
-        canvas.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            const touch = e.touches[0];
-            pickUpSand(touch.clientX, touch.clientY, true);
-            lastMouseX = touch.clientX;
-            lastMouseY = touch.clientY;
-        });
-        
-        canvas.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            const touch = e.touches[0];
-            lastMouseX = touch.clientX;
-            lastMouseY = touch.clientY;
-            if (!isHolding) {
-                disturbSand(touch.clientX, touch.clientY, true);
-            }
-        });
-        
-        canvas.addEventListener('touchend', (e) => {
-            if (isHolding) {
-                dropSand(lastMouseX, lastMouseY);
-            }
-        });
-        
-        // Countdown dates
-        const startDate = new Date('December 29, 2025 00:00:00').getTime();
-        const targetDate = new Date('January 10, 2026 00:00:00').getTime();
-        const totalDuration = targetDate - startDate;
-        
-        function getElapsedPercentage() {
-            const now = new Date().getTime();
-            const elapsed = now - startDate;
-            return Math.max(0, Math.min(1, elapsed / totalDuration));
-        }
-        
-        function prefillSand() {
-            const percentage = getElapsedPercentage();
-            
-            // Calculate how many rows from the bottom should be filled
-            const fillRows = Math.floor(rows * percentage);
-            
-            if (fillRows <= 0) return;
-            
-            // Fill from bottom up with some randomness for natural look
-            for (let y = rows - 1; y >= rows - fillRows; y--) {
-                for (let x = 0; x < cols; x++) {
-                    // Add some variation - not every cell filled, creates texture
-                    const distFromBottom = rows - y;
-                    const fillChance = distFromBottom < fillRows * 0.9 ? 0.95 : 0.7;
-                    
-                    if (Math.random() < fillChance) {
-                        const idx = getIndex(x, y);
-                        grid[idx] = Math.floor(Math.random() * sandColors.length) + 1;
-                    }
-                }
-            }
-            
-            // Add some irregular top surface
-            const surfaceY = rows - fillRows;
-            for (let x = 0; x < cols; x++) {
-                const variation = Math.floor(Math.random() * 5) - 2;
-                for (let dy = 0; dy < Math.abs(variation); dy++) {
-                    const y = surfaceY + (variation > 0 ? -dy : dy);
-                    if (inBounds(x, y)) {
-                        const idx = getIndex(x, y);
-                        if (variation > 0 && Math.random() > 0.5) {
-                            grid[idx] = Math.floor(Math.random() * sandColors.length) + 1;
-                        } else if (variation < 0) {
-                            grid[idx] = 0;
-                        }
-                    }
-                }
-            }
-        }
-        
-        function updateCountdown() {
-            const now = new Date().getTime();
-            const distance = targetDate - now;
-            
-            if (distance < 0) {
-                document.getElementById('countdown').textContent = "IT'S TIME!";
-                return;
-            }
-            
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            
-            const pad = n => n.toString().padStart(2, '0');
-            document.getElementById('countdown').textContent = 
-                `${pad(days)}:${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
-        }
-        
-        // Calculate spawn rate to fill remaining screen by end date
-        function getSpawnRate() {
-            const now = new Date().getTime();
-            const remaining = targetDate - now;
-            const remainingPercentage = 1 - getElapsedPercentage();
-            
-            if (remaining <= 0 || remainingPercentage <= 0) return 0;
-            
-            // Calculate cells remaining to fill
-            const totalCells = cols * rows;
-            const cellsToFill = totalCells * remainingPercentage;
-            
-            // Spawn rate: cells per 100ms interval
-            const intervalsRemaining = remaining / 100;
-            return Math.max(1, Math.ceil(cellsToFill / intervalsRemaining));
-        }
-        
-        // Dynamic sand spawning based on time remaining
-        function spawnSandDynamic() {
-            const spawnCount = getSpawnRate();
-            for (let i = 0; i < spawnCount; i++) {
-                const x = Math.floor(Math.random() * cols);
-                const idx = getIndex(x, 0);
-                if (grid[idx] === 0) {
-                    grid[idx] = Math.floor(Math.random() * sandColors.length) + 1;
-                }
-            }
-        }
-        
-        // Main loop
-        function gameLoop() {
-            updateSand();
-            render();
-            renderHeldSand(lastMouseX, lastMouseY);
-            requestAnimationFrame(gameLoop);
-        }
-        
-        // Init
-        resize();
-        prefillSand(); // Pre-fill based on elapsed time
-        window.addEventListener('resize', resize);
-        window.addEventListener('orientationchange', () => {
-            setTimeout(resize, 100); // Delay to let orientation settle
-        });
-        
-        // Update countdown every second
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
-        
-        // Spawn sand at calculated rate
-        setInterval(spawnSandDynamic, 100);
-        
-        // Start game loop
-        gameLoop();
-    </script>
 </body>
 </html>
