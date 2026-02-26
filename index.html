@@ -283,6 +283,78 @@
             }
         }
         
+        @keyframes chaos1 {
+            0% { color: #ff0000; } 10% { color: #00ff00; } 20% { color: #ff00ff; }
+            30% { color: #ffff00; } 40% { color: #00ffff; } 50% { color: #ff6600; }
+            60% { color: #0000ff; } 70% { color: #ff0099; } 80% { color: #99ff00; }
+            90% { color: #ff3300; } 100% { color: #00ff99; }
+        }
+        @keyframes chaos2 {
+            0% { color: #00ffff; } 10% { color: #ff00ff; } 20% { color: #ffff00; }
+            30% { color: #ff0000; } 40% { color: #00ff00; } 50% { color: #0066ff; }
+            60% { color: #ff6600; } 70% { color: #ff0066; } 80% { color: #66ff00; }
+            90% { color: #00ffcc; } 100% { color: #cc00ff; }
+        }
+        @keyframes chaos3 {
+            0% { color: #ff00ff; } 10% { color: #ffff00; } 20% { color: #00ff00; }
+            30% { color: #00ffff; } 40% { color: #ff3300; } 50% { color: #9900ff; }
+            60% { color: #ff0000; } 70% { color: #00ff66; } 80% { color: #ff9900; }
+            90% { color: #0099ff; } 100% { color: #ff0066; }
+        }
+        @keyframes chaos4 {
+            0% { color: #ffff00; } 10% { color: #ff0000; } 20% { color: #00ffff; }
+            30% { color: #ff00ff; } 40% { color: #66ff00; } 50% { color: #ff0099; }
+            60% { color: #00ff00; } 70% { color: #ff6600; } 80% { color: #0066ff; }
+            90% { color: #ff00cc; } 100% { color: #00ff00; }
+        }
+        @keyframes chaos5 {
+            0% { color: #00ff00; } 10% { color: #ff6600; } 20% { color: #ff0000; }
+            30% { color: #0099ff; } 40% { color: #ff00ff; } 50% { color: #ffff00; }
+            60% { color: #cc00ff; } 70% { color: #00ffff; } 80% { color: #ff0066; }
+            90% { color: #00ff99; } 100% { color: #ff9900; }
+        }
+        
+        .shapestore-link {
+            font-weight: bold;
+            text-shadow: 1px 1px 2px #000;
+            text-decoration: none;
+        }
+        
+        .shapestore-link span {
+            display: inline-block;
+        }
+        
+        .shapestore-link span:nth-child(1) { animation: chaos1 1.2s infinite; }
+        .shapestore-link span:nth-child(2) { animation: chaos3 1.0s infinite; }
+        .shapestore-link span:nth-child(3) { animation: chaos5 1.4s infinite; }
+        .shapestore-link span:nth-child(4) { animation: chaos2 0.9s infinite; }
+        .shapestore-link span:nth-child(5) { animation: chaos4 1.1s infinite; }
+        .shapestore-link span:nth-child(6) { animation: chaos2 1.3s infinite; }
+        .shapestore-link span:nth-child(7) { animation: chaos5 1.0s infinite; }
+        .shapestore-link span:nth-child(8) { animation: chaos1 1.2s infinite; }
+        .shapestore-link span:nth-child(9) { animation: chaos3 0.8s infinite; }
+        .shapestore-link span:nth-child(10) { animation: chaos4 1.5s infinite; }
+        
+        .sandwich-container {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .shapegraf-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            z-index: 10;
+        }
+        
+        .shapegraf-overlay img {
+            max-width: 450px;
+            height: auto;
+        }
+        
         /* Mobile Responsive Styles */
         @media screen and (max-width: 1024px) {
             html, body {
@@ -444,11 +516,12 @@
         <div style="width: 1400px; margin: 0 auto;">
             <a href="index.html">HOME</a>
             <a href="blog.html">BLOG</a>
-            <a href="games.html">GAMES</a>
+            <a href="Games.html">GAMES</a>
             <span style="color: #ff3300; margin-left: 20px; margin-right: 10px;">| sponsored sites:</span>
+            <a href="shapestore.html" class="shapestore-link"><span>S</span><span>H</span><span>A</span><span>P</span><span>E</span> <span>S</span><span>T</span><span>O</span><span>R</span><span>E</span></a>
             <a href="dbay.html" style="color: #ffff00;">DBAY STORE</a>
             <a href="dontayvious.html" style="color: #ffff00;">DONTAYVIOUS LIL ONLINE SHOP</a>
-            <a href="https://discord.gg/ZVQr9MJG" style="color: #ffff00;" target="_blank">BIRDCORD SERVER</a>
+            <a href="https://discord.gg/ztcpYm3d" style="color: #ffff00;" target="_blank">BIRDCORD SERVER</a>
             <a href="bgs.html" style="color: #ffff00;">BIRD GAME STUDIOS</a>
         </div>
     </div>
@@ -478,6 +551,7 @@
                     <p><strong>Music:</strong> B and The Sentient Timberland Boot fell off yall....</p>
                     <p><strong>Tech:</strong> Bird Game 4 LEAKED on LimeWire...</p>
                     <p><strong>Social:</strong> Limited addition Bird Game 3 Launch tees skyrocketing in resale on DBay.com</p>
+                    <p><strong>Clothing and Collectibles:</strong> THE SHAPE STORE IS NOW OPEN. AND GODDAMN NIGGA, THERE'S BEEN OVER 100,000 CUSTOMERS THE FIRST DAY. THIS SHIT'S GETTING CRAZY MAN......</p>
                 </div>
                 
                 <div class="content-block">
@@ -487,7 +561,12 @@
             
             <!-- CENTER CONTENT -->
             <div id="center">
-                <img src="sandwich.png" alt="Sandwich" style="width: 100%; height: auto;">
+                <div class="sandwich-container">
+                    <img src="sandwich.png" alt="Sandwich" style="width: 100%; height: auto;">
+                    <a href="shapestore.html" class="shapegraf-overlay">
+                        <img src="shapegraf.png" alt="Shapegraf">
+                    </a>
+                </div>
             </div>
             
             <!-- MOBILE ADS (only visible on mobile) -->
@@ -754,6 +833,3 @@
     </script>
 </body>
 </html>
-
-
-

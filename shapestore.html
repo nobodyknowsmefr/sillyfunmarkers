@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Shape Store</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Background Music -->
+    <audio id="shapetheme" autoplay loop>
+        <source src="shapetheme.wav" type="audio/wav">
+    </audio>
+    
+    <!-- SVG Filter for Halftone Effect -->
+    <svg style="position: absolute; width: 0; height: 0;">
+        <defs>
+            <filter id="halftone" x="0" y="0" width="100%" height="100%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="0.5" result="blur"/>
+                <feComponentTransfer in="blur" result="contrast">
+                    <feFuncR type="discrete" tableValues="0 0.2 0.4 0.6 0.8 1"/>
+                    <feFuncG type="discrete" tableValues="0 0.2 0.4 0.6 0.8 1"/>
+                    <feFuncB type="discrete" tableValues="0 0.2 0.4 0.6 0.8 1"/>
+                </feComponentTransfer>
+            </filter>
+            <pattern id="dots" patternUnits="userSpaceOnUse" width="4" height="4">
+                <circle cx="2" cy="2" r="1.5" fill="#000" opacity="0.3"/>
+            </pattern>
+        </defs>
+    </svg>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="index.html" class="home-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span>Home</span>
+        </a>
+    </nav>
+
+    <!-- Logo Section -->
+    <header class="logo-section">
+        <img src="logoshapestore.png" alt="The Shape Store" class="logo">
+    </header>
+
+    <!-- Shopify Buy Button Container -->
+    <div id="shopify-collection" class="shopify-container">
+        <div id='product-component-1772131504141'></div>
+    </div>
+
+    <!-- Mini Game UI -->
+    <div id="game-ui" class="game-ui hidden">
+        <div class="game-header">
+            <div class="timer-display">
+                <span class="timer-label">TIME</span>
+                <span id="timer">30</span>
+            </div>
+            <div class="game-score">
+                <span class="score-label">SORTED</span>
+                <span><span id="sorted-count">0</span> / <span id="target-count">5</span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3D Bucket Container -->
+    <div id="bucket-container" class="bucket-container hidden">
+        <canvas id="bucket-canvas"></canvas>
+        <div class="bucket-labels">
+            <div class="bucket-label yellow-label">YELLOW</div>
+            <div class="bucket-label cube-label">CUBES</div>
+        </div>
+    </div>
+
+    <!-- Discount Popup - Rhombus Design -->
+    <div id="discount-popup" class="discount-popup hidden">
+        <div class="rhombus-container">
+            <div class="rhombus-shape">
+                <div class="slice slice-top"></div>
+                <div class="slice slice-right"></div>
+                <div class="slice slice-bottom"></div>
+                <div class="slice slice-left"></div>
+                <div class="rhombus-inner">
+                    <div class="code-reveal">
+                        <span class="code-label">YOUR CODE</span>
+                        <img src="shapecode.png" alt="Discount Code" class="discount-code-img" id="discount-code">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button id="close-popup-btn" class="close-btn-minimal"><img src="tap.png" alt="Tap to Continue" class="tap-img"></button>
+    </div>
+
+    <!-- Canvas for Falling Shapes -->
+    <canvas id="shapes-canvas"></canvas>
+
+    <!-- Matter.js Physics Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+    <!-- Three.js for 3D Buckets -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="script.js"></script>
+    <script src="buckets.js"></script>
+    
+    <!-- Shopify Buy Button -->
+    <script type="text/javascript">
+    (function () {
+      var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+      if (window.ShopifyBuy) {
+        if (window.ShopifyBuy.UI) {
+          ShopifyBuyInit();
+        } else {
+          loadScript();
+        }
+      } else {
+        loadScript();
+      }
+      function loadScript() {
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = scriptURL;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+        script.onload = ShopifyBuyInit;
+      }
+      function ShopifyBuyInit() {
+        var client = ShopifyBuy.buildClient({
+          domain: '41ic0w-2f.myshopify.com',
+          storefrontAccessToken: '6e54032e3f45a6f5eae1c08fedff0078',
+        });
+        ShopifyBuy.UI.onReady(client).then(function (ui) {
+          ui.createComponent('product', {
+            id: '8665942524057',
+            node: document.getElementById('product-component-1772131504141'),
+            moneyFormat: '%24%7B%7Bamount%7D%7D',
+            options: {
+              "product": {
+                "styles": {
+                  "product": {
+                    "@media (min-width: 601px)": {
+                      "max-width": "calc(25% - 20px)",
+                      "margin-left": "20px",
+                      "margin-bottom": "50px"
+                    }
+                  }
+                },
+                "text": {
+                  "button": "Add to cart"
+                }
+              },
+              "productSet": {
+                "styles": {
+                  "products": {
+                    "@media (min-width: 601px)": {
+                      "margin-left": "-20px"
+                    }
+                  }
+                }
+              },
+              "modalProduct": {
+                "contents": {
+                  "img": false,
+                  "imgWithCarousel": true,
+                  "button": false,
+                  "buttonWithQuantity": true
+                },
+                "styles": {
+                  "product": {
+                    "@media (min-width: 601px)": {
+                      "max-width": "100%",
+                      "margin-left": "0px",
+                      "margin-bottom": "0px"
+                    }
+                  }
+                },
+                "text": {
+                  "button": "Add to cart"
+                }
+              },
+              "option": {},
+              "cart": {
+                "text": {
+                  "total": "Subtotal",
+                  "button": "Checkout"
+                }
+              },
+              "toggle": {}
+            },
+          });
+        });
+      }
+    })();
+    </script>
+</body>
+</html>
