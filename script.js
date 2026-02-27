@@ -41,7 +41,34 @@ const ground = Bodies.rectangle(width / 2, height + 30, width + 100, 60, {
 const leftWall = Bodies.rectangle(-30, height / 2, 60, height * 2, { isStatic: true });
 const rightWall = Bodies.rectangle(width + 30, height / 2, 60, height * 2, { isStatic: true });
 
-Composite.add(world, [ground, leftWall, rightWall]);
+// Door collision body - positioned at bottom center
+// Responsive dimensions based on screen size
+function getDoorDimensions() {
+    if (window.innerWidth <= 480) {
+        // Mobile: door is 110x154px visually
+        return { width: 70, height: 120, yOffset: 25 };
+    } else if (window.innerWidth <= 768) {
+        // Tablet: door is 140x196px visually
+        return { width: 90, height: 160, yOffset: 15 };
+    } else {
+        // Desktop: door is 180x252px visually
+        return { width: 100, height: 200, yOffset: 10 };
+    }
+}
+
+let doorDims = getDoorDimensions();
+let doorWidth = doorDims.width;
+let doorHeight = doorDims.height;
+const doorX = width / 2;
+const doorY = height - 30 - (doorHeight / 2) + doorDims.yOffset;
+const doorBody = Bodies.rectangle(doorX, doorY, doorWidth, doorHeight, { 
+    isStatic: true,
+    friction: 0.5,
+    restitution: 0.3,
+    label: 'door'
+});
+
+Composite.add(world, [ground, leftWall, rightWall, doorBody]);
 
 // Create runner
 const runner = Runner.create();
@@ -793,6 +820,14 @@ window.addEventListener('resize', () => {
     // Update ground position
     Body.setPosition(ground, { x: width / 2, y: height + 30 });
     Body.setPosition(rightWall, { x: width + 30, y: height / 2 });
+    
+    // Update door position and size based on screen
+    doorDims = getDoorDimensions();
+    doorWidth = doorDims.width;
+    doorHeight = doorDims.height;
+    const newDoorY = height - 30 - (doorHeight / 2) + doorDims.yOffset;
+    Body.setPosition(doorBody, { x: width / 2, y: newDoorY });
+    Body.setVertices(doorBody, Bodies.rectangle(width / 2, newDoorY, doorWidth, doorHeight).vertices);
 });
 
 // Start the animation

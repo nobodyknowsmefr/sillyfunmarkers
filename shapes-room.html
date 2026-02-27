@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shape Store - Enter the Void</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'MS Sans Serif', 'Segoe UI', Tahoma, sans-serif;
+            background: #0a0a0a;
+            overflow: hidden;
+            color: #000;
+        }
+
+        #shapes-room-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1000;
+            color: #c0c0c0;
+            text-decoration: none;
+            font-size: 24px;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+
+        .back-btn:hover {
+            color: #fff;
+        }
+
+        #buy-button-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100;
+            text-align: center;
+        }
+
+        /* Windows 98 Window */
+        .win98-window {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #dfdfdf #808080 #808080 #dfdfdf;
+            box-shadow: 
+                inset 1px 1px 0 #fff,
+                inset -1px -1px 0 #404040,
+                4px 4px 10px rgba(0, 0, 0, 0.5);
+            min-width: 320px;
+        }
+
+        .win98-titlebar {
+            background: linear-gradient(90deg, #000080, #1084d0);
+            padding: 3px 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+        }
+
+        .win98-title {
+            color: #fff;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .win98-title-icon {
+            width: 16px;
+            height: 16px;
+            background: #c0c0c0;
+            border: 1px solid;
+            border-color: #dfdfdf #808080 #808080 #dfdfdf;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+
+        .win98-controls {
+            display: flex;
+            gap: 2px;
+        }
+
+        .win98-btn {
+            width: 16px;
+            height: 14px;
+            background: #c0c0c0;
+            border: 1px solid;
+            border-color: #dfdfdf #808080 #808080 #dfdfdf;
+            font-size: 9px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-family: 'Marlett', sans-serif;
+        }
+
+        .win98-btn:active {
+            border-color: #808080 #dfdfdf #dfdfdf #808080;
+        }
+
+        .win98-content {
+            padding: 16px;
+            background: #c0c0c0;
+        }
+
+        .win98-address-bar {
+            background: #fff;
+            border: 2px solid;
+            border-color: #808080 #dfdfdf #dfdfdf #808080;
+            padding: 2px 4px;
+            margin-bottom: 12px;
+            font-size: 11px;
+            color: #000;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .win98-address-bar span {
+            color: #808080;
+        }
+
+        .product-area {
+            background: #fff;
+            border: 2px solid;
+            border-color: #808080 #dfdfdf #dfdfdf #808080;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .product-label {
+            font-size: 11px;
+            color: #000;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        #product-component-1772214425877 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .win98-statusbar {
+            background: #c0c0c0;
+            border-top: 1px solid #808080;
+            padding: 2px 4px;
+            font-size: 11px;
+            color: #000;
+            display: flex;
+            gap: 8px;
+        }
+
+        .statusbar-section {
+            border: 1px solid;
+            border-color: #808080 #dfdfdf #dfdfdf #808080;
+            padding: 1px 8px;
+            flex: 1;
+        }
+
+        .statusbar-section:first-child {
+            flex: 3;
+        }
+
+
+        /* Draggable popup windows */
+        .win98-popup {
+            position: fixed;
+            z-index: 500;
+            cursor: default;
+        }
+
+        .win98-popup .win98-titlebar {
+            cursor: move;
+        }
+
+        .win98-popup .win98-window {
+            min-width: auto;
+            width: auto;
+        }
+
+        .win98-popup.image-popup .win98-window {
+            width: 220px;
+        }
+
+        .win98-popup.text-popup .win98-window {
+            width: 300px;
+        }
+
+        .win98-popup .product-area {
+            padding: 8px;
+        }
+
+        .win98-popup .product-area img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .win98-popup .text-content {
+            background: #fff;
+            border: 2px solid;
+            border-color: #808080 #dfdfdf #dfdfdf #808080;
+            padding: 12px;
+            font-size: 11px;
+            line-height: 1.5;
+            color: #000;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .win98-popup.active {
+            z-index: 600;
+        }
+
+        /* Resize handle for image popups */
+        .win98-popup.image-popup .resize-handle {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 16px;
+            height: 16px;
+            cursor: se-resize;
+            background: linear-gradient(135deg, transparent 50%, #808080 50%, #808080 60%, transparent 60%, transparent 70%, #808080 70%, #808080 80%, transparent 80%);
+        }
+
+        .win98-popup.image-popup .win98-window {
+            position: relative;
+            min-width: 150px;
+            min-height: 150px;
+        }
+
+        .win98-popup.image-popup .product-area img {
+            width: 100%;
+            height: auto;
+            pointer-events: none;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .win98-window {
+                min-width: 280px;
+                margin: 0 10px;
+            }
+
+            .win98-content {
+                padding: 12px;
+            }
+
+            .product-area {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 3D Scene Container -->
+    <div id="shapes-room-container"></div>
+
+    <!-- Back Button -->
+    <a href="shapestore.html" class="back-btn">←</a>
+
+    <!-- Sleeve Image Popup -->
+    <div class="win98-popup image-popup" id="popup-sleeve">
+        <div class="win98-window">
+            <div class="win98-titlebar">
+                <div class="win98-title">
+                    <div class="win98-title-icon">◆</div>
+                    sleeve.png
+                </div>
+                <div class="win98-controls">
+                    <div class="win98-btn">_</div>
+                    <div class="win98-btn">□</div>
+                    <div class="win98-btn">×</div>
+                </div>
+            </div>
+            <div class="win98-content">
+                <div class="product-area">
+                    <img src="sleeve.png" alt="Sleeve Detail">
+                </div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+    </div>
+
+    <!-- Close Image Popup -->
+    <div class="win98-popup image-popup" id="popup-close">
+        <div class="win98-window">
+            <div class="win98-titlebar">
+                <div class="win98-title">
+                    <div class="win98-title-icon">◆</div>
+                    close.png
+                </div>
+                <div class="win98-controls">
+                    <div class="win98-btn">_</div>
+                    <div class="win98-btn">□</div>
+                    <div class="win98-btn">×</div>
+                </div>
+            </div>
+            <div class="win98-content">
+                <div class="product-area">
+                    <img src="close.png" alt="Close Up Detail">
+                </div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+    </div>
+
+    <!-- Hood Image Popup -->
+    <div class="win98-popup image-popup" id="popup-hood">
+        <div class="win98-window">
+            <div class="win98-titlebar">
+                <div class="win98-title">
+                    <div class="win98-title-icon">◆</div>
+                    hood.png
+                </div>
+                <div class="win98-controls">
+                    <div class="win98-btn">_</div>
+                    <div class="win98-btn">□</div>
+                    <div class="win98-btn">×</div>
+                </div>
+            </div>
+            <div class="win98-content">
+                <div class="product-area">
+                    <img src="hood.png" alt="Hood Detail">
+                </div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+    </div>
+
+    <!-- Size Chart Image Popup -->
+    <div class="win98-popup image-popup" id="popup-sizechart">
+        <div class="win98-window">
+            <div class="win98-titlebar">
+                <div class="win98-title">
+                    <div class="win98-title-icon">◆</div>
+                    size-chart.png
+                </div>
+                <div class="win98-controls">
+                    <div class="win98-btn">_</div>
+                    <div class="win98-btn">□</div>
+                    <div class="win98-btn">×</div>
+                </div>
+            </div>
+            <div class="win98-content">
+                <div class="product-area">
+                    <img src="size-chart.png" alt="Size Chart">
+                </div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+    </div>
+
+    <!-- Description Text Popup -->
+    <div class="win98-popup text-popup" id="popup-description">
+        <div class="win98-window">
+            <div class="win98-titlebar">
+                <div class="win98-title">
+                    <div class="win98-title-icon">◆</div>
+                    Product Details
+                </div>
+                <div class="win98-controls">
+                    <div class="win98-btn">_</div>
+                    <div class="win98-btn">□</div>
+                    <div class="win98-btn">×</div>
+                </div>
+            </div>
+            <div class="win98-content">
+                <div class="text-content">
+                    <p>This is a very RARE and LIMITED hoodie created in the back of The Shape Store on opening night.</p>
+                    <br>
+                    <p>Please give The Shape Store 1-2 weeks to ship your hoodie, we are fighting off hordes of customers in order to get to the shipping facility.</p>
+                    <br>
+                    <p>80% cotton / 20% polyester fleece 8.5 oz midweight fabric — soft, durable, breathable Front pouch pocket Double-needle stitching throughout True-to-size fit (size up for an oversized look)</p>
+                    <br>
+                    <p>Sample size shown: XL</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Buy Button Container -->
+    <div id="buy-button-container">
+        <div class="win98-window">
+            <div class="win98-titlebar">
+                <div class="win98-title">
+                    <div class="win98-title-icon">◆</div>
+                    Shape Store - Internet Explorer
+                </div>
+                <div class="win98-controls">
+                    <div class="win98-btn">_</div>
+                    <div class="win98-btn">□</div>
+                    <div class="win98-btn">×</div>
+                </div>
+            </div>
+            <div class="win98-content">
+                <div class="win98-address-bar">
+                    <span>Address:</span> https://shapestore.com/hoodie
+                </div>
+                <div class="product-area">
+                    <div class="product-label">SHAPE STORE HOODIE</div>
+                    <div id='product-component-1772228086713'></div>
+                </div>
+            </div>
+            <div class="win98-statusbar">
+                <div class="statusbar-section">Done</div>
+                <div class="statusbar-section">Internet</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- Shapes Room Script -->
+    <script src="shapes-room.js"></script>
+
+    <!-- Shopify Buy Button -->
+    <script type="text/javascript">
+    /*<![CDATA[*/
+    (function () {
+      var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+      if (window.ShopifyBuy) {
+        if (window.ShopifyBuy.UI) {
+          ShopifyBuyInit();
+        } else {
+          loadScript();
+        }
+      } else {
+        loadScript();
+      }
+      function loadScript() {
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = scriptURL;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+        script.onload = ShopifyBuyInit;
+      }
+      function ShopifyBuyInit() {
+        var client = ShopifyBuy.buildClient({
+          domain: '41ic0w-2f.myshopify.com',
+          storefrontAccessToken: '6e54032e3f45a6f5eae1c08fedff0078',
+        });
+        ShopifyBuy.UI.onReady(client).then(function (ui) {
+          ui.createComponent('product', {
+            id: '8667494383769',
+            node: document.getElementById('product-component-1772228086713'),
+            moneyFormat: '%24%7B%7Bamount%7D%7D',
+            options: {
+  "product": {
+    "styles": {
+      "product": {
+        "@media (min-width: 601px)": {
+          "max-width": "calc(25% - 20px)",
+          "margin-left": "20px",
+          "margin-bottom": "50px"
+        }
+      },
+      "button": {
+        "font-family": "Avant Garde, sans-serif",
+        ":hover": {
+          "background-color": "#2d8e44"
+        },
+        "background-color": "#329e4c",
+        ":focus": {
+          "background-color": "#2d8e44"
+        }
+      }
+    },
+    "text": {
+      "button": "Add to cart"
+    }
+  },
+  "productSet": {
+    "styles": {
+      "products": {
+        "@media (min-width: 601px)": {
+          "margin-left": "-20px"
+        }
+      }
+    }
+  },
+  "modalProduct": {
+    "contents": {
+      "img": false,
+      "imgWithCarousel": true,
+      "button": false,
+      "buttonWithQuantity": true
+    },
+    "styles": {
+      "product": {
+        "@media (min-width: 601px)": {
+          "max-width": "100%",
+          "margin-left": "0px",
+          "margin-bottom": "0px"
+        }
+      },
+      "button": {
+        "font-family": "Avant Garde, sans-serif",
+        ":hover": {
+          "background-color": "#2d8e44"
+        },
+        "background-color": "#329e4c",
+        ":focus": {
+          "background-color": "#2d8e44"
+        }
+      }
+    },
+    "text": {
+      "button": "Add to cart"
+    }
+  },
+  "option": {},
+  "cart": {
+    "styles": {
+      "button": {
+        "font-family": "Avant Garde, sans-serif",
+        ":hover": {
+          "background-color": "#2d8e44"
+        },
+        "background-color": "#329e4c",
+        ":focus": {
+          "background-color": "#2d8e44"
+        }
+      }
+    },
+    "text": {
+      "total": "Subtotal",
+      "button": "Checkout"
+    }
+  },
+  "toggle": {
+    "styles": {
+      "toggle": {
+        "font-family": "Avant Garde, sans-serif",
+        "background-color": "#329e4c",
+        ":hover": {
+          "background-color": "#2d8e44"
+        },
+        ":focus": {
+          "background-color": "#2d8e44"
+        }
+      }
+    }
+  }
+},
+          });
+        });
+      }
+    })();
+    /*]]>*/
+    </script>
+
+    <!-- Popup Drag, Resize, and Random Placement Script -->
+    <script>
+    (function() {
+        const popups = document.querySelectorAll('.win98-popup');
+        const imagePopups = document.querySelectorAll('.win98-popup.image-popup');
+        let highestZIndex = 600;
+
+        // Random placement for each popup
+        popups.forEach((popup, index) => {
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            const popupWidth = 250;
+            const popupHeight = 300;
+            
+            const maxX = windowWidth - popupWidth - 50;
+            const maxY = windowHeight - popupHeight - 50;
+            const minX = 50;
+            const minY = 50;
+            
+            const randomX = Math.floor(Math.random() * (maxX - minX)) + minX;
+            const randomY = Math.floor(Math.random() * (maxY - minY)) + minY;
+            
+            popup.style.left = randomX + 'px';
+            popup.style.top = randomY + 'px';
+        });
+
+        // Drag functionality
+        popups.forEach(popup => {
+            const titlebar = popup.querySelector('.win98-titlebar');
+            let isDragging = false;
+            let offsetX, offsetY;
+
+            popup.addEventListener('mousedown', () => {
+                popups.forEach(p => p.classList.remove('active'));
+                popup.classList.add('active');
+                highestZIndex++;
+                popup.style.zIndex = highestZIndex;
+            });
+
+            titlebar.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                offsetX = e.clientX - popup.offsetLeft;
+                offsetY = e.clientY - popup.offsetTop;
+                popup.style.zIndex = ++highestZIndex;
+                e.preventDefault();
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    popup.style.left = (e.clientX - offsetX) + 'px';
+                    popup.style.top = (e.clientY - offsetY) + 'px';
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+
+            // Touch drag (single finger)
+            titlebar.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) {
+                    isDragging = true;
+                    const touch = e.touches[0];
+                    offsetX = touch.clientX - popup.offsetLeft;
+                    offsetY = touch.clientY - popup.offsetTop;
+                    popup.style.zIndex = ++highestZIndex;
+                }
+            });
+
+            document.addEventListener('touchmove', (e) => {
+                if (isDragging && e.touches.length === 1) {
+                    const touch = e.touches[0];
+                    popup.style.left = (touch.clientX - offsetX) + 'px';
+                    popup.style.top = (touch.clientY - offsetY) + 'px';
+                }
+            });
+
+            document.addEventListener('touchend', () => {
+                isDragging = false;
+            });
+        });
+
+        // Resize functionality for image popups (desktop)
+        imagePopups.forEach(popup => {
+            const resizeHandle = popup.querySelector('.resize-handle');
+            const win = popup.querySelector('.win98-window');
+            let isResizing = false;
+            let startX, startY, startWidth, startHeight;
+
+            if (resizeHandle) {
+                resizeHandle.addEventListener('mousedown', (e) => {
+                    isResizing = true;
+                    startX = e.clientX;
+                    startY = e.clientY;
+                    startWidth = win.offsetWidth;
+                    startHeight = win.offsetHeight;
+                    popup.style.zIndex = ++highestZIndex;
+                    e.preventDefault();
+                    e.stopPropagation();
+                });
+
+                document.addEventListener('mousemove', (e) => {
+                    if (isResizing) {
+                        const newWidth = startWidth + (e.clientX - startX);
+                        const newHeight = startHeight + (e.clientY - startY);
+                        if (newWidth >= 150) win.style.width = newWidth + 'px';
+                        if (newHeight >= 150) win.style.height = newHeight + 'px';
+                    }
+                });
+
+                document.addEventListener('mouseup', () => {
+                    isResizing = false;
+                });
+            }
+
+            // Pinch-to-zoom for mobile
+            let initialPinchDistance = 0;
+            let initialWidth = 0;
+
+            popup.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 2) {
+                    initialPinchDistance = Math.hypot(
+                        e.touches[0].clientX - e.touches[1].clientX,
+                        e.touches[0].clientY - e.touches[1].clientY
+                    );
+                    initialWidth = win.offsetWidth;
+                    e.preventDefault();
+                }
+            });
+
+            popup.addEventListener('touchmove', (e) => {
+                if (e.touches.length === 2) {
+                    const currentDistance = Math.hypot(
+                        e.touches[0].clientX - e.touches[1].clientX,
+                        e.touches[0].clientY - e.touches[1].clientY
+                    );
+                    const scale = currentDistance / initialPinchDistance;
+                    const newWidth = Math.max(150, Math.min(500, initialWidth * scale));
+                    win.style.width = newWidth + 'px';
+                    e.preventDefault();
+                }
+            });
+
+            // Double-click to enlarge
+            let isEnlarged = false;
+            const originalWidth = 220;
+            const enlargedWidth = 400;
+
+            popup.addEventListener('dblclick', (e) => {
+                if (!isEnlarged) {
+                    win.style.width = enlargedWidth + 'px';
+                    isEnlarged = true;
+                } else {
+                    win.style.width = originalWidth + 'px';
+                    isEnlarged = false;
+                }
+            });
+        });
+    })();
+    </script>
+</body>
+</html>
