@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>shapedraw</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --paper: #ffffff;
+        --ink: #111111;
+        --line: #e8e8e8;
+        --line-strong: #d9d9d9;
+        --yellow: #f7dc22;
+        --red: #df2f24;
+        --orange: #ef8f20;
+        --blue: #1b67af;
+        --green: #2a9e44;
+        --white: #f7f7f7;
+        --sand: #d9c29a;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Manrope", "Avenir Next", "Helvetica Neue", sans-serif;
+        background: var(--paper);
+        color: var(--ink);
+        display: grid;
+        place-items: center;
+      }
+
+      .app {
+        width: min(960px, 94vw);
+        display: grid;
+        gap: 18px;
+        justify-items: center;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(1.1rem, 1vw + 0.9rem, 1.5rem);
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: lowercase;
+      }
+
+      .controls {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .group {
+        display: inline-flex;
+        gap: 6px;
+        padding: 5px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+      }
+
+      button {
+        border: 1px solid transparent;
+        background: transparent;
+        color: var(--ink);
+        border-radius: 999px;
+        padding: 8px 12px;
+        font: inherit;
+        font-size: 0.82rem;
+        cursor: pointer;
+      }
+
+      button:hover {
+        border-color: var(--line-strong);
+      }
+
+      button.active {
+        border-color: var(--ink);
+      }
+
+      .shape-button {
+        width: 38px;
+        height: 38px;
+        padding: 0;
+        display: grid;
+        place-items: center;
+      }
+
+      .shape-button svg {
+        width: 22px;
+        height: 22px;
+      }
+
+      .color-button {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        padding: 0;
+        border: 1px solid var(--line-strong);
+      }
+
+      .action-button {
+        border: 1px solid var(--line);
+      }
+
+      .board-wrap {
+        width: min(84vw, 760px);
+        aspect-ratio: 1 / 1;
+        border: 1px solid var(--line-strong);
+        border-radius: 12px;
+        padding: 10px;
+      }
+
+      .board {
+        width: 100%;
+        height: 100%;
+        border-radius: 8px;
+        background:
+          linear-gradient(to right, rgba(0, 0, 0, 0.035) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(0, 0, 0, 0.035) 1px, transparent 1px);
+        background-size: 34px 34px;
+        touch-action: none;
+        cursor: crosshair;
+      }
+
+      .hint {
+        margin: 0;
+        color: #666;
+        font-size: 0.8rem;
+      }
+
+      @media (max-width: 680px) {
+        .board-wrap {
+          width: 94vw;
+          padding: 8px;
+        }
+
+        .group {
+          border-radius: 14px;
+          padding: 6px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app">
+      <h1>shapedraw</h1>
+
+      <section class="controls" aria-label="drawing controls">
+        <div class="group" id="ratio-group" role="group" aria-label="Canvas ratio">
+          <button data-ratio="1:1" class="active">1:1</button>
+          <button data-ratio="4:3">4:3</button>
+          <button data-ratio="3:4">3:4</button>
+        </div>
+
+        <div class="group" id="shape-group" role="group" aria-label="Shape picker"></div>
+
+        <div class="group" id="color-group" role="group" aria-label="Color picker"></div>
+
+        <button class="action-button" id="undo-btn" type="button">Undo</button>
+        <button class="action-button" id="clear-btn" type="button">Clear</button>
+        <button class="action-button" id="save-btn" type="button">Save</button>
+      </section>
+
+      <section class="board-wrap" id="board-wrap" aria-label="Drawing board">
+        <svg class="board" id="board" viewBox="0 0 900 900" aria-label="Shape canvas"></svg>
+      </section>
+
+      <p class="hint">Pick shape + color, then click or drag on the canvas.</p>
+    </main>
+
+    <script>
+      const shapeDefs = {
+        hex: [
+          [0, -28],
+          [24, -14],
+          [24, 14],
+          [0, 28],
+          [-24, 14],
+          [-24, -14],
+        ],
+        tri: [
+          [0, -24],
+          [23, 18],
+          [-23, 18],
+        ],
+        trap: [
+          [-30, 16],
+          [30, 16],
+          [19, -16],
+          [-19, -16],
+        ],
+        square: [
+          [-18, -18],
+          [18, -18],
+          [18, 18],
+          [-18, 18],
+        ],
+        kite: [
+          [-30, 0],
+          [-10, -10],
+          [30, 0],
+          [-10, 10],
+        ],
+        diamond: [
+          [0, -24],
+          [27, 0],
+          [0, 24],
+          [-27, 0],
+        ],
+      };
+
+      const ratios = {
+        "1:1": [900, 900],
+        "4:3": [960, 720],
+        "3:4": [720, 960],
+      };
+
+      const colors = [
+        { key: "yellow", value: "#f7dc22" },
+        { key: "red", value: "#df2f24" },
+        { key: "orange", value: "#ef8f20" },
+        { key: "blue", value: "#1b67af" },
+        { key: "green", value: "#2a9e44" },
+        { key: "white", value: "#f7f7f7" },
+        { key: "sand", value: "#d9c29a" },
+      ];
+
+      const shapeOrder = ["hex", "tri", "trap", "square", "kite", "diamond"];
+
+      const state = {
+        activeShape: "hex",
+        activeColor: "#f7dc22",
+        activeRatio: "1:1",
+        items: [],
+        isDrawing: false,
+        lastPoint: null,
+      };
+
+      const board = document.getElementById("board");
+      const boardWrap = document.getElementById("board-wrap");
+      const ratioGroup = document.getElementById("ratio-group");
+      const shapeGroup = document.getElementById("shape-group");
+      const colorGroup = document.getElementById("color-group");
+      const undoBtn = document.getElementById("undo-btn");
+      const clearBtn = document.getElementById("clear-btn");
+      const saveBtn = document.getElementById("save-btn");
+
+      function pointsToString(points, x, y, scale, rotation) {
+        const rad = (rotation * Math.PI) / 180;
+        const cos = Math.cos(rad);
+        const sin = Math.sin(rad);
+
+        return points
+          .map(([px, py]) => {
+            const sx = px * scale;
+            const sy = py * scale;
+            const rx = sx * cos - sy * sin;
+            const ry = sx * sin + sy * cos;
+            return `${(x + rx).toFixed(2)},${(y + ry).toFixed(2)}`;
+          })
+          .join(" ");
+      }
+
+      function iconForShape(shapeKey) {
+        const pts = pointsToString(shapeDefs[shapeKey], 22, 22, 0.45, 0);
+        return `<svg viewBox="0 0 44 44" aria-hidden="true"><polygon points="${pts}" fill="#111" stroke="none"></polygon></svg>`;
+      }
+
+      function renderShapeButtons() {
+        shapeGroup.innerHTML = "";
+        shapeOrder.forEach((shapeKey) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "shape-button" + (shapeKey === state.activeShape ? " active" : "");
+          btn.dataset.shape = shapeKey;
+          btn.innerHTML = iconForShape(shapeKey);
+          btn.setAttribute("aria-label", `Use ${shapeKey} shape`);
+          shapeGroup.appendChild(btn);
+        });
+      }
+
+      function renderColorButtons() {
+        colorGroup.innerHTML = "";
+        colors.forEach((color) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "color-button" + (color.value === state.activeColor ? " active" : "");
+          btn.dataset.color = color.value;
+          btn.style.background = color.value;
+          btn.setAttribute("aria-label", `Use ${color.key} color`);
+          colorGroup.appendChild(btn);
+        });
+      }
+
+      function renderItems() {
+        board.innerHTML = "";
+
+        state.items.forEach((item) => {
+          const poly = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+          poly.setAttribute(
+            "points",
+            pointsToString(shapeDefs[item.shape], item.x, item.y, item.scale, item.rotation)
+          );
+          poly.setAttribute("fill", item.color);
+          poly.setAttribute("stroke", item.color === "#f7f7f7" ? "#b8b8b8" : "rgba(0, 0, 0, 0.20)");
+          poly.setAttribute("stroke-width", "1");
+          board.appendChild(poly);
+        });
+      }
+
+      function setRatio(ratio) {
+        state.activeRatio = ratio;
+        const [w, h] = ratios[ratio];
+        board.setAttribute("viewBox", `0 0 ${w} ${h}`);
+        boardWrap.style.aspectRatio = `${w} / ${h}`;
+
+        ratioGroup.querySelectorAll("button").forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.ratio === ratio);
+        });
+      }
+
+      function addItemAt(clientX, clientY) {
+        const rect = board.getBoundingClientRect();
+        const [vbX, vbY, vbW, vbH] = board.viewBox.baseVal
+          ? [board.viewBox.baseVal.x, board.viewBox.baseVal.y, board.viewBox.baseVal.width, board.viewBox.baseVal.height]
+          : [0, 0, 900, 900];
+
+        const x = vbX + ((clientX - rect.left) / rect.width) * vbW;
+        const y = vbY + ((clientY - rect.top) / rect.height) * vbH;
+
+        if (x < vbX || x > vbX + vbW || y < vbY || y > vbY + vbH) return;
+
+        const scale = 0.88 + Math.random() * 0.36;
+        const rotation = -12 + Math.random() * 24;
+
+        state.items.push({
+          x,
+          y,
+          shape: state.activeShape,
+          color: state.activeColor,
+          scale,
+          rotation,
+        });
+
+        renderItems();
+      }
+
+      ratioGroup.addEventListener("click", (event) => {
+        const btn = event.target.closest("button[data-ratio]");
+        if (!btn) return;
+        setRatio(btn.dataset.ratio);
+      });
+
+      shapeGroup.addEventListener("click", (event) => {
+        const btn = event.target.closest("button[data-shape]");
+        if (!btn) return;
+        state.activeShape = btn.dataset.shape;
+        renderShapeButtons();
+      });
+
+      colorGroup.addEventListener("click", (event) => {
+        const btn = event.target.closest("button[data-color]");
+        if (!btn) return;
+        state.activeColor = btn.dataset.color;
+        renderColorButtons();
+      });
+
+      board.addEventListener("pointerdown", (event) => {
+        state.isDrawing = true;
+        state.lastPoint = { x: event.clientX, y: event.clientY };
+        addItemAt(event.clientX, event.clientY);
+      });
+
+      board.addEventListener("pointermove", (event) => {
+        if (!state.isDrawing || !state.lastPoint) return;
+
+        const dx = event.clientX - state.lastPoint.x;
+        const dy = event.clientY - state.lastPoint.y;
+        if (Math.hypot(dx, dy) < 22) return;
+
+        addItemAt(event.clientX, event.clientY);
+        state.lastPoint = { x: event.clientX, y: event.clientY };
+      });
+
+      window.addEventListener("pointerup", () => {
+        state.isDrawing = false;
+        state.lastPoint = null;
+      });
+
+      undoBtn.addEventListener("click", () => {
+        state.items.pop();
+        renderItems();
+      });
+
+      clearBtn.addEventListener("click", () => {
+        state.items = [];
+        renderItems();
+      });
+
+      saveBtn.addEventListener("click", () => {
+        const serializer = new XMLSerializer();
+        const clone = board.cloneNode(true);
+        const viewBox = board.getAttribute("viewBox") || "0 0 900 900";
+        const [, , width, height] = viewBox.split(" ").map(Number);
+        clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+        clone.setAttribute("width", String(width || 900));
+        clone.setAttribute("height", String(height || 900));
+        clone.style.background = "#ffffff";
+
+        const source = serializer.serializeToString(clone);
+        const blob = new Blob([source], { type: "image/svg+xml;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `shapedraw-${Date.now()}.svg`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      });
+
+      renderShapeButtons();
+      renderColorButtons();
+      setRatio("1:1");
+      renderItems();
+    </script>
+  </body>
+</html>

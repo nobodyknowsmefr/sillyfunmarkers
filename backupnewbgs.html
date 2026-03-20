@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Blind Box Bird Box</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            width: 100vw;
+            width: 100dvw;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            padding: 20px 0;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 60px 0 80px 0;
+            }
+        }
+        
+        .centered-image {
+            max-width: 90vw;
+            max-width: 90dvw; /* Dynamic viewport for mobile browsers */
+            max-height: 90vh;
+            max-height: 90dvh; /* Dynamic viewport for mobile browsers */
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Mobile-specific adjustments */
+        @media (max-width: 768px) and (orientation: portrait) {
+            .centered-image {
+                max-width: 95vw;
+                max-width: 95dvw;
+                max-height: 70vh;
+                max-height: 70dvh;
+            }
+        }
+        
+        @media (max-width: 768px) and (orientation: landscape) {
+            .centered-image {
+                max-width: 85vw;
+                max-width: 85dvw;
+                max-height: 80vh;
+                max-height: 80dvh;
+            }
+        }
+        
+        /* Small mobile devices */
+        @media (max-width: 480px) {
+            .centered-image {
+                max-width: 98vw;
+                max-width: 98dvw;
+                max-height: 60vh;
+                max-height: 60dvh;
+            }
+        }
+        
+        /* Handle safe areas for notched devices */
+        @supports (padding: max(0px)) {
+            body {
+                padding-left: max(0px, env(safe-area-inset-left));
+                padding-right: max(0px, env(safe-area-inset-right));
+            }
+            
+            @media (max-width: 768px) {
+                body {
+                    padding-top: max(60px, calc(60px + env(safe-area-inset-top)));
+                    padding-bottom: max(80px, calc(80px + env(safe-area-inset-bottom)));
+                }
+            }
+        }
+        
+        .home-btn {
+            position: fixed;
+            top: 12px;
+            left: 15px;
+            z-index: 100;
+            pointer-events: all;
+            background: none;
+            border: none;
+            color: #111;
+            font-family: 'Times New Roman', serif;
+            font-size: 11px;
+            cursor: pointer;
+            text-decoration: none;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 10px;
+        }
+        
+        .home-btn:hover {
+            color: #666;
+        }
+        
+        @media (max-width: 600px) {
+            .home-btn {
+                top: max(8px, env(safe-area-inset-top));
+                left: max(8px, env(safe-area-inset-left));
+                font-size: 10px;
+            }
+        }
+        
+        .image-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            max-width: 90vw;
+            padding: 20px 0;
+        }
+        
+        .image-container .centered-image {
+            max-width: 100%;
+            height: auto;
+            flex-shrink: 0;
+        }
+        
+        /* Adjust for mobile */
+        @media (max-width: 768px) and (orientation: portrait) {
+            .image-container {
+                max-width: 95vw;
+                gap: 15px;
+            }
+        }
+        
+        @media (max-width: 768px) and (orientation: landscape) {
+            .image-container {
+                max-width: 85vw;
+                flex-direction: row;
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .image-container {
+                max-width: 98vw;
+                gap: 10px;
+            }
+        }
+        
+        .code-text {
+            font-family: 'Arial', sans-serif;
+            font-size: 14px;
+            color: #000;
+            letter-spacing: 0.05em;
+            animation: pulse 2s ease-in-out infinite;
+            user-select: text;
+            cursor: text;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        @media (max-width: 600px) {
+            .code-text {
+                font-size: 11px;
+                max-width: 90%;
+                word-break: break-all;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="home-btn">HOME</a>
+    <div class="image-container">
+        <img src="breaking.png" alt="Breaking" class="centered-image">
+        <img src="manu.png" alt="Manu" class="centered-image">
+        <div class="code-text">HmVdfWvNG7v1KAjPnUEUFFfJyzifAtyzxDfxCqAgBXy1</div>
+    </div>
+</body>
+</html>

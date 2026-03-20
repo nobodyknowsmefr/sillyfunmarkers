@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>ShapeTalk - PictoChat Style</title>
+    <link rel="stylesheet" href="css/styles.css?v=20260320J">
+    <link rel="stylesheet" href="css/search-results.css?v=20260320J">
+    <link rel="stylesheet" href="css/conspiracy-sites.css?v=20260320J">
+    <link rel="stylesheet" href="css/notepad.css?v=20260320J">
+</head>
+<body>
+    <!-- Wallpaper layer only — no interaction needed -->
+    <div class="vista-desktop" aria-hidden="true"></div>
+
+    <!-- Desktop icons — independent fixed layer -->
+    <div class="os-desktop-icons" id="osDesktopIcons">
+        <button class="desktop-icon" type="button" data-app="computer" onclick="window.ShapeOS&&window.ShapeOS.openApp('computer')">
+            <span class="desktop-icon-badge shape-green-square"></span>
+            <span class="desktop-icon-label">Terminal</span>
+        </button>
+        <button class="desktop-icon" type="button" data-app="internet" onclick="window.ShapeOS&&window.ShapeOS.openApp('internet')">
+            <span class="desktop-icon-badge shape-square"></span>
+            <span class="desktop-icon-label">Internet</span>
+        </button>
+        <button class="desktop-icon" type="button" data-app="videos" onclick="window.ShapeOS&&window.ShapeOS.openApp('videos')">
+            <span class="desktop-icon-badge shape-triangle"></span>
+            <span class="desktop-icon-label">Videos</span>
+        </button>
+        <button class="desktop-icon" type="button" data-app="pictures" onclick="window.ShapeOS&&window.ShapeOS.openApp('pictures')">
+            <span class="desktop-icon-badge shape-blue-circle"></span>
+            <span class="desktop-icon-label">Pictures</span>
+        </button>
+        <button class="desktop-icon" type="button" data-app="shapedraw" onclick="window.ShapeOS&&window.ShapeOS.openApp('shapedraw')">
+            <span class="desktop-icon-badge shape-purple-diamond"></span>
+            <span class="desktop-icon-label">ShapeDraw</span>
+        </button>
+        <button class="desktop-icon" type="button" data-app="games" onclick="window.ShapeOS&&window.ShapeOS.openApp('games')">
+            <span class="desktop-icon-badge shape-gray-trapezoid"></span>
+            <span class="desktop-icon-label">My Game Projects</span>
+        </button>
+        <button class="desktop-icon" type="button" data-app="recyclebin" onclick="window.ShapeOS&&window.ShapeOS.openApp('recyclebin')">
+            <span class="desktop-icon-badge shape-white-bin"></span>
+            <span class="desktop-icon-label">Recycle Bin</span>
+        </button>
+    </div>
+
+    <!-- Taskbar — independent fixed layer -->
+    <div class="os-taskbar" id="osTaskbar">
+        <button class="vista-start" type="button" aria-label="Start"><span class="start-label">start</span></button>
+        <div class="xp-quicklaunch">
+            <span class="quick-icon taskbar-shape-green-square" data-app="computer" onclick="window.ShapeOS&&window.ShapeOS.openApp('computer')"></span>
+            <span class="quick-icon taskbar-shape-square" data-app="internet" onclick="window.ShapeOS&&window.ShapeOS.openApp('internet')"></span>
+            <span class="quick-icon taskbar-shape-triangle" data-app="videos" onclick="window.ShapeOS&&window.ShapeOS.openApp('videos')"></span>
+            <span class="quick-icon taskbar-shape-blue-circle" data-app="pictures" onclick="window.ShapeOS&&window.ShapeOS.openApp('pictures')"></span>
+            <span class="quick-icon taskbar-shape-purple-diamond" data-app="shapedraw" onclick="window.ShapeOS&&window.ShapeOS.openApp('shapedraw')"></span>
+            <span class="quick-icon taskbar-shape-gray-trapezoid" data-app="games" onclick="window.ShapeOS&&window.ShapeOS.openApp('games')"></span>
+            <span class="quick-icon taskbar-shape-white-bin" data-app="recyclebin" onclick="window.ShapeOS&&window.ShapeOS.openApp('recyclebin')"></span>
+        </div>
+        <div class="vista-taskbar-apps" id="osTaskbarApps"></div>
+        <div class="vista-tray">
+            <span class="tray-icon tray-shape-circle"></span>
+            <span class="tray-icon tray-shape-square"></span>
+            <span class="tray-icon tray-shape-triangle"></span>
+            <div class="tray-clock">
+                <div class="tray-time" id="vistaTrayTime">--:--</div>
+                <div class="tray-date" id="vistaTrayDate">---</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="osWindows" class="os-windows" aria-hidden="false"></div>
+
+    <div class="device-shell">
+        <div class="shell-greeble greeble-left"></div>
+        <div class="shell-greeble greeble-right"></div>
+        <div class="shell-greeble greeble-top"></div>
+        <div class="shell-greeble greeble-bottom"></div>
+        <div class="pictochat-container">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="top-bar-left">
+                    <span class="logo">
+                        <span class="shapes">
+                            <span class="shape circle"></span>
+                            <span class="shape square"></span>
+                            <span class="shape triangle"></span>
+                            <span class="shape diamond"></span>
+                        </span>
+                        ShapeTalk
+                    </span>
+                </div>
+                <div class="top-bar-center">
+                    <button class="room-name" id="roomName" type="button" title="Tap to switch rooms">Lobby</button>
+                    <div class="room-menu-wrap" id="roomMenuWrap">
+                        <div class="room-menu" id="roomMenu" hidden>
+                            <div class="room-menu-section-label">Main Rooms</div>
+                            <button class="room-menu-item" type="button" data-room="Lobby">Lobby</button>
+                            <button class="room-menu-item" type="button" data-room="ShapeTalk">ShapeTalk</button>
+                            <button class="room-menu-item" type="button" data-room="VIP">VIP</button>
+                            <div class="room-menu-section-label">Private Rooms</div>
+                            <button class="room-menu-item" type="button" data-room="Private 1">Private 1</button>
+                            <button class="room-menu-item" type="button" data-room="Private 2">Private 2</button>
+                            <button class="room-menu-item" type="button" data-room="Private 3">Private 3</button>
+                            <button class="room-menu-item" type="button" data-room="Private 4">Private 4</button>
+                            <button class="room-menu-item" type="button" data-room="Private 5">Private 5</button>
+                            <button class="room-menu-item" type="button" data-room="Private 6">Private 6</button>
+                            <button class="room-menu-item" type="button" data-room="Private 7">Private 7</button>
+                            <button class="room-menu-item" type="button" data-room="Private 8">Private 8</button>
+                            <button class="room-menu-item" type="button" data-room="Private 9">Private 9</button>
+                            <button class="room-menu-item" type="button" data-room="Private 10">Private 10</button>
+                        </div>
+                    </div>
+                    <button class="room-name dm-name" id="dmName" type="button" title="Tap to switch direct messages">DMs</button>
+                    <div class="app-launcher app-launcher-inline" id="appLauncherWrap">
+                        <button class="app-launcher-toggle" id="appLauncherToggle" type="button" aria-label="Open apps" aria-expanded="false" title="Open apps">
+                            <span class="app-launcher-icon">▣</span>
+                            <span class="app-launcher-label">Apps</span>
+                        </button>
+                        <div class="app-launcher-menu" id="appLauncherMenu" hidden>
+                            <button class="app-launcher-item" type="button" data-app="computer">Terminal</button>
+                            <button class="app-launcher-item" type="button" data-app="internet">Internet</button>
+                            <button class="app-launcher-item" type="button" data-app="videos">Videos</button>
+                            <button class="app-launcher-item" type="button" data-app="pictures">Pictures</button>
+                            <button class="app-launcher-item" type="button" data-app="shapedraw">ShapeDraw</button>
+                            <button class="app-launcher-item" type="button" data-app="games">My Game Projects</button>
+                            <button class="app-launcher-item" type="button" data-app="recyclebin">Recycle Bin</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="top-bar-right">
+                    <button type="button" class="build-version" onclick="window.location.href='../index.html'">Home</button>
+                    <button class="build-version" id="buildVersion" type="button" title="Refresh current build">build 20260320J</button>
+                    <span class="user-count"><span id="userCount">1</span> online</span>
+                </div>
+            </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- User List Sidebar -->
+            <div class="user-list">
+                <div class="user-list-header" id="userListHeader">Users</div>
+                <ul id="userList">
+                    <!-- Users will be added here dynamically -->
+                </ul>
+            </div>
+
+            <!-- Chat Area -->
+            <div class="chat-area">
+                <div class="chat-context-bar" id="chatContextBar" hidden>
+                    <span class="chat-context-label">Direct Message</span>
+                    <span class="chat-context-name" id="chatContextName">DM</span>
+                </div>
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Messages will appear here -->
+                    <div class="system-message">
+                        <span class="system-icon">★</span>
+                        Welcome to ShapeTalk! Start chatting below.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Eavesdrop Panel (overlays .main-content when /watching is active) -->
+            <div class="eavesdrop-panel" id="eavesdropPanel" hidden>
+                <div class="eavesdrop-hud">
+                    <div class="ehud-live"><span class="live-dot"></span>LIVE</div>
+                    <div class="ehud-room">WATCHING: <span id="eavesdropRoomName">---</span></div>
+                    <button class="ehud-stop" id="eavesdropStop" type="button">&#9632; STOP</button>
+                </div>
+                <div class="eavesdrop-targets" id="eavesdropTargets"></div>
+                <div class="eavesdrop-feed" id="eavesdropFeed"></div>
+                <div class="eavesdrop-actions">
+                    <button class="steal-btn" id="stealBtn" type="button">&#9672; STEAL IDEAS</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Message Input Display -->
+        <div class="input-display">
+            <div class="your-name-inline">
+                <button class="name-value" id="yourName" type="button" title="Change mood">Loading...</button>
+                <button class="rename-btn" id="renameBtn" title="Get new name"></button>
+                <div class="mood-menu-wrap" id="moodMenuWrap">
+                    <div class="mood-options" id="moodOptions"></div>
+                    <select class="mood-select" id="moodSelect" aria-label="Choose mood">
+                        <option value=":happy:">Happy</option>
+                        <option value=":cool:">Cool</option>
+                        <option value=":wink:">Wink</option>
+                        <option value=":blush:">Blush</option>
+                        <option value=":angry:">Angry</option>
+                        <option value=":sleepy:">Sleepy</option>
+                        <option value=":shocked:">Shocked</option>
+                        <option value=":confused:">Confused</option>
+                        <option value=":star:">Star</option>
+                        <option value=":music:">Music</option>
+                        <option value=":fire:">Fire</option>
+                        <option value=":thumbsup:">Thumbs Up</option>
+                        <option value=":love:">Love</option>
+                        <option value=":laugh:">Laugh</option>
+                        <option value=":sad:">Sad</option>
+                        <option value=":question:">Question</option>
+                        <option value=":exclaim:">Excited</option>
+                        <option value=":circlekid:">Circle Kid</option>
+                        <option value=":squarepal:">Square Pal</option>
+                        <option value=":trianglepal:">Triangle Pal</option>
+                        <option value=":diamondfriend:">Diamond Friend</option>
+                        <option value=":shapecat:">Cat</option>
+                        <option value=":shapedog:">Dog</option>
+                        <option value=":shapepanda:">Panda</option>
+                        <option value=":shapefrog:">Frog</option>
+                        <option value=":shapeowl:">Owl</option>
+                    </select>
+                </div>
+            </div>
+            <div class="message-preview" id="messagePreview">
+                <span class="preview-text" id="previewText"></span>
+                <span class="cursor-blink">|</span>
+            </div>
+            <div class="reply-preview" id="replyPreview" hidden>
+                <div class="reply-preview-copy">
+                    <span class="reply-preview-label">Replying to</span>
+                    <span class="reply-preview-text" id="replyPreviewText"></span>
+                </div>
+                <button class="reply-preview-cancel" id="replyCancelBtn" type="button" title="Cancel reply">×</button>
+            </div>
+            <div class="input-actions">
+                <button class="preview-action-btn keyboard-toggle-btn" id="keyboardToggleBtn" type="button" title="Show or hide ShapeTalk keys">
+                    <span class="preview-action-icon">⌨</span>
+                    <span class="preview-action-label">Keys</span>
+                </button>
+                <button class="preview-action-btn send-btn-mobile" id="sendBtnMobile" type="button" title="Send message">
+                    <span class="preview-action-label">SEND</span>
+                </button>
+                <button class="preview-action-btn send-btn-desktop" id="sendBtnDesktop" type="button" title="Send message">
+                    <span class="preview-action-label">SEND</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- On-Screen Keyboard (PictoChat Style) -->
+        <div class="keyboard-area" id="keyboardArea">
+            <!-- Hidden actual input -->
+            <input type="text" id="messageInput" maxlength="200" autocomplete="off" class="hidden-input" placeholder="Type a message...">
+            
+            <!-- Keyboard Layout -->
+            <div class="keyboard-container">
+                <!-- Left side buttons -->
+                <div class="keyboard-side-left">
+                    <button class="side-btn emoji-toggle" id="emojiBtn" title="Emojis">
+                        <span class="btn-icon" id="emojiToggleIcon">☺</span>
+                    </button>
+                    <button class="side-btn draw-toggle" id="drawBtn" title="Draw">
+                        <span class="btn-icon">✎</span>
+                    </button>
+                </div>
+
+                <!-- Main keyboard -->
+                <div class="keyboard-main">
+                    <!-- Number row -->
+                    <div class="keyboard-row">
+                        <button class="key" data-key="1">1</button>
+                        <button class="key" data-key="2">2</button>
+                        <button class="key" data-key="3">3</button>
+                        <button class="key" data-key="4">4</button>
+                        <button class="key" data-key="5">5</button>
+                        <button class="key" data-key="6">6</button>
+                        <button class="key" data-key="7">7</button>
+                        <button class="key" data-key="8">8</button>
+                        <button class="key" data-key="9">9</button>
+                        <button class="key" data-key="0">0</button>
+                        <button class="key" data-key="-">-</button>
+                        <button class="key" data-key="=">=</button>
+                    </div>
+                    <!-- QWERTY row -->
+                    <div class="keyboard-row">
+                        <button class="key" data-key="q">q</button>
+                        <button class="key" data-key="w">w</button>
+                        <button class="key" data-key="e">e</button>
+                        <button class="key" data-key="r">r</button>
+                        <button class="key" data-key="t">t</button>
+                        <button class="key" data-key="y">y</button>
+                        <button class="key" data-key="u">u</button>
+                        <button class="key" data-key="i">i</button>
+                        <button class="key" data-key="o">o</button>
+                        <button class="key" data-key="p">p</button>
+                        <button class="key key-backspace" data-key="Backspace">←</button>
+                    </div>
+                    <!-- ASDF row -->
+                    <div class="keyboard-row">
+                        <button class="key key-caps" data-key="CapsLock">CAPS</button>
+                        <button class="key" data-key="a">a</button>
+                        <button class="key" data-key="s">s</button>
+                        <button class="key" data-key="d">d</button>
+                        <button class="key" data-key="f">f</button>
+                        <button class="key" data-key="g">g</button>
+                        <button class="key" data-key="h">h</button>
+                        <button class="key" data-key="j">j</button>
+                        <button class="key" data-key="k">k</button>
+                        <button class="key" data-key="l">l</button>
+                        <button class="key key-enter" data-key="Enter">ENTER</button>
+                    </div>
+                    <!-- ZXCV row -->
+                    <div class="keyboard-row">
+                        <button class="key key-shift" data-key="Shift">SHIFT</button>
+                        <button class="key" data-key="z">z</button>
+                        <button class="key" data-key="x">x</button>
+                        <button class="key" data-key="c">c</button>
+                        <button class="key" data-key="v">v</button>
+                        <button class="key" data-key="b">b</button>
+                        <button class="key" data-key="n">n</button>
+                        <button class="key" data-key="m">m</button>
+                        <button class="key" data-key=",">,</button>
+                        <button class="key" data-key=".">.</button>
+                        <button class="key" data-key="/">/</button>
+                    </div>
+                    <!-- Space row -->
+                    <div class="keyboard-row">
+                        <button class="key" data-key=";">;</button>
+                        <button class="key" data-key="'">'</button>
+                        <button class="key key-space" data-key=" ">SPACE</button>
+                        <button class="key" data-key="?">?</button>
+                        <button class="key" data-key="!">!</button>
+                    </div>
+                </div>
+
+                <!-- Right side buttons -->
+                <div class="keyboard-side-right">
+                    <button class="side-btn native-keyboard-btn" id="nativeKeyboardBtn" type="button" title="Use phone keyboard">
+                        <span class="btn-label">⌨</span>
+                    </button>
+                    <button class="side-btn copy-btn" id="copyBtnMobile" type="button" title="Copy current message">
+                        <span class="btn-label">COPY</span>
+                    </button>
+                    <button class="side-btn paste-btn" id="pasteBtnMobile" type="button" title="Paste into current message">
+                        <span class="btn-label">PASTE</span>
+                    </button>
+                    <button class="side-btn clear-btn" id="clearBtn">
+                        <span class="btn-label">CLR</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Emoji Picker (shown when toggled) -->
+            <div class="emoji-picker" id="emojiPicker">
+                <div class="emoji-picker-header">Shape Emojis</div>
+                <div class="emoji-grid" id="emojiGrid">
+                    <!-- Emojis will be loaded here -->
+                </div>
+            </div>
+
+            <div class="draw-picker" id="drawPicker">
+                <div class="draw-picker-header">Draw</div>
+                <div class="draw-toolbar">
+                    <button class="draw-tool-btn active" data-tool="pen" id="drawToolPen">PEN</button>
+                    <button class="draw-tool-btn" data-tool="eraser" id="drawToolEraser">ERASE</button>
+                    <input class="draw-color" type="color" id="drawColor" value="#000000">
+                    <select class="draw-size" id="drawSize">
+                        <option value="2">S</option>
+                        <option value="4" selected>M</option>
+                        <option value="8">L</option>
+                    </select>
+                    <button class="draw-action-btn" id="drawClear">CLR</button>
+                    <button class="draw-action-btn primary" id="drawSend">SEND</button>
+                </div>
+                <canvas id="drawCanvas" width="520" height="180"></canvas>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
+    <!-- App Scripts -->
+    <script src="js/firebase-config.js?v=20260320J"></script>
+    <script src="js/firebase-chat.js?v=20260320J"></script>
+    <script src="js/firebase-leaderboard.js?v=20260320J"></script>
+    <script src="js/emojis.js?v=20260320J"></script>
+    <script src="js/nameGenerator.js?v=20260320J"></script>
+    <script src="js/os.js?v=20260320J"></script>
+    <script src="js/chat.js?v=20260320J"></script>
+</body>
+</html>

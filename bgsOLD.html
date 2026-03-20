@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bird Pass | Bird Game Studios</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            min-height: 100vh;
+            min-height: 100dvh; /* Dynamic viewport height for mobile */
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        /* ========== BACKGROUND LAYER ========== */
+        .bird-pass-container {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px;
+        }
+
+        /* Background Image - Asset18 */
+        .background-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('Asset18.png');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-color: #0d4a6b; /* Simple fallback */
+            z-index: -1;
+        }
+
+        /* ========== CONTENT WRAPPER ========== */
+        /* This will hold all the UI elements we add later */
+        .content-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            min-height: calc(100vh - 40px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1;
+        }
+
+        /* ========== MAIN PANEL HUD ========== */
+        .main-panel-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        /* ========== TITLE AREA ========== */
+        .title-area {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .title-logo {
+            max-width: 400px;
+            width: 100%;
+            height: auto;
+            margin-top: 90px;
+        }
+
+        /* ========== LOGO AREA ========== */
+        .logo-area {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .studio-logo {
+            max-width: 250px;
+            width: 100%;
+            height: auto;
+        }
+
+        .main-panel {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .frost-overlay {
+            position: absolute;
+            top: 43%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 104%;
+            height: 123%;
+            object-fit: fill;
+            pointer-events: none; /* Allow clicks to pass through */
+        }
+
+        /* ========== SIDE BOXES ========== */
+        .side-boxes {
+            position: absolute;
+            left: -18%;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 2;
+        }
+
+        .side-box {
+            width: 120px;
+            height: auto;
+            cursor: pointer;
+            transition: transform 0.2s ease, filter 0.2s ease;
+        }
+
+        .side-box:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        /* ========== RESPONSIVE BREAKPOINTS ========== */
+        
+        /* Tablet */
+        @media (max-width: 1024px) {
+            .bird-pass-container {
+                padding: 15px;
+            }
+            
+            .content-wrapper {
+                max-width: 95%;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .bird-pass-container {
+                padding: 10px;
+            }
+
+            .background-layer {
+                /* On mobile, we might want to adjust position */
+                background-position: center top;
+            }
+
+            .main-panel-container {
+                max-width: 100%;
+            }
+
+            .title-logo {
+                max-width: 280px;
+            }
+
+            .studio-logo {
+                max-width: 180px;
+            }
+
+            .side-boxes {
+                left: -18%;
+            }
+
+            .side-box {
+                width: 90px;
+            }
+        }
+
+        /* Small Mobile */
+        @media (max-width: 480px) {
+            .bird-pass-container {
+                padding: 8px;
+            }
+
+            .side-boxes {
+                left: -20%;
+                gap: 8px;
+            }
+
+            .side-box {
+                width: 65px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Layer -->
+    <div class="background-layer"></div>
+    
+    <!-- Main Container -->
+    <div class="bird-pass-container">
+        <div class="content-wrapper">
+            <!-- TITLE AREA -->
+            <div class="title-area">
+                <img src="birdpass.png" alt="Bird Pass" class="title-logo">
+            </div>
+            
+            <!-- MAIN PANEL AREA -->
+            <div class="main-panel-container">
+                <!-- SIDE BOXES - Left side -->
+                <div class="side-boxes">
+                    <img src="sidebox.png" alt="" class="side-box">
+                    <img src="sidebox.png" alt="" class="side-box">
+                    <img src="sidebox.png" alt="" class="side-box">
+                    <img src="sidebox.png" alt="" class="side-box">
+                </div>
+                
+                <img src="Asset17.png" alt="Main Display" class="main-panel">
+                <img src="frostoverlay.png" alt="" class="frost-overlay">
+            </div>
+            
+            
+            <!-- LOGO AREA -->
+            <div class="logo-area">
+                <img src="winterlogo.png" alt="Bird Game Studios" class="studio-logo">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

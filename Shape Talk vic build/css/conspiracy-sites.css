@@ -1,0 +1,510 @@
+/* Conspiracy Sites Styling */
+.conspiracy-site {
+    background: #fff;
+    min-height: 100%;
+    font-family: Arial, sans-serif;
+    overflow-y: auto;
+}
+
+.highlight {
+    background: #ffff00;
+    padding: 2px 4px;
+    font-weight: bold;
+}
+
+/* Forum Style (ObscureTruthForum) */
+.forum-style {
+    background: #eef2ff;
+}
+
+.forum-style .site-header {
+    background: #1e3a8a;
+    color: #fff;
+    padding: 15px 20px;
+    border-bottom: 3px solid #1e40af;
+}
+
+.forum-style .site-logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.forum-style .site-nav {
+    font-size: 14px;
+    color: #93c5fd;
+}
+
+.forum-style .thread-container {
+    max-width: 900px;
+    margin: 20px auto;
+    background: #fff;
+    border: 1px solid #cbd5e1;
+    padding: 20px;
+}
+
+.forum-style .thread-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #1e293b;
+    margin-bottom: 10px;
+}
+
+.forum-style .thread-meta {
+    color: #64748b;
+    font-size: 13px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.forum-style .post {
+    margin-bottom: 15px;
+    border-left: 3px solid #3b82f6;
+    padding-left: 15px;
+}
+
+.forum-style .post-header {
+    background: #f1f5f9;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+
+.forum-style .post-num {
+    color: #3b82f6;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.forum-style .username {
+    color: #059669;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.forum-style .timestamp {
+    color: #64748b;
+    font-size: 12px;
+}
+
+.forum-style .post-content {
+    line-height: 1.6;
+    color: #1e293b;
+}
+
+/* Reddit Style (Leddit) */
+.reddit-style {
+    background: #dae0e6;
+}
+
+.reddit-style .reddit-header {
+    background: #ff4500;
+    color: #fff;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.reddit-style .reddit-logo {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.reddit-style .subreddit-name {
+    font-size: 18px;
+}
+
+.reddit-style .reddit-post {
+    max-width: 800px;
+    margin: 20px auto;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    display: flex;
+}
+
+.reddit-style .vote-section {
+    background: #f8f9fa;
+    padding: 10px;
+    text-align: center;
+    width: 50px;
+    border-right: 1px solid #edeff1;
+}
+
+.reddit-style .upvote,
+.reddit-style .downvote {
+    color: #878a8c;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.reddit-style .vote-count {
+    font-weight: bold;
+    margin: 5px 0;
+    color: #1c1c1c;
+}
+
+.reddit-style .post-main {
+    flex: 1;
+    padding: 15px;
+}
+
+.reddit-style .post-title {
+    font-size: 20px;
+    font-weight: 500;
+    color: #1c1c1c;
+    margin-bottom: 8px;
+}
+
+.reddit-style .post-meta {
+    font-size: 12px;
+    color: #7c7c7c;
+    margin-bottom: 15px;
+}
+
+.reddit-style .post-body {
+    line-height: 1.6;
+    color: #1c1c1c;
+    margin-bottom: 20px;
+}
+
+.reddit-style .comments-section {
+    border-top: 1px solid #edeff1;
+    padding-top: 15px;
+}
+
+.reddit-style .comment {
+    margin-bottom: 15px;
+    padding-left: 15px;
+    border-left: 2px solid #edeff1;
+}
+
+.reddit-style .comment-header {
+    font-size: 12px;
+    color: #7c7c7c;
+    margin-bottom: 5px;
+}
+
+.reddit-style .comment-body {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Blog Style (ParanoidBlogspot) */
+.blog-style {
+    background: #f5f5f5;
+}
+
+.blog-style .blog-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.blog-style .blog-title {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.blog-style .blog-subtitle {
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+.blog-style .blog-post {
+    max-width: 700px;
+    margin: 30px auto;
+    background: #fff;
+    padding: 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.blog-style .blog-post-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #2d3748;
+    margin-bottom: 15px;
+    line-height: 1.3;
+}
+
+.blog-style .blog-post-meta {
+    color: #718096;
+    font-size: 14px;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.blog-style .blog-post-content {
+    line-height: 1.8;
+    color: #2d3748;
+}
+
+.blog-style .blog-post-content p {
+    margin-bottom: 15px;
+}
+
+.blog-style .blog-comments {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #e2e8f0;
+}
+
+.blog-style .blog-comment {
+    background: #f7fafc;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-left: 3px solid #667eea;
+}
+
+.blog-style .comment-author {
+    font-weight: bold;
+    color: #4a5568;
+    margin-bottom: 8px;
+}
+
+.blog-style .comment-text {
+    color: #2d3748;
+    line-height: 1.6;
+}
+
+/* 4chan Style (4archive) */
+.chan-style {
+    background: #eef2ff;
+    font-family: Arial, sans-serif;
+}
+
+.chan-style .chan-header {
+    background: #d6daf0;
+    padding: 10px 20px;
+    border-bottom: 1px solid #b7c5d9;
+}
+
+.chan-style .chan-logo {
+    font-size: 28px;
+    font-weight: bold;
+    color: #af0a0f;
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.chan-style .board-name {
+    display: inline-block;
+    color: #34345c;
+    font-size: 18px;
+}
+
+.chan-style .chan-thread {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.chan-style .op-post,
+.chan-style .reply-post {
+    background: #d6daf0;
+    border: 1px solid #b7c5d9;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.chan-style .post-info {
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+
+.chan-style .post-name {
+    color: #117743;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.chan-style .post-date {
+    color: #000;
+    margin-right: 10px;
+}
+
+.chan-style .post-no {
+    color: #000;
+}
+
+.chan-style .post-message {
+    color: #000;
+    line-height: 1.6;
+}
+
+.chan-style .quote {
+    color: #789922;
+}
+
+/* Dark Web Style (ObscureForum.onion) */
+.darkweb-style {
+    background: #1a1a1a;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+}
+
+.darkweb-style .darkweb-header {
+    background: #0a0a0a;
+    padding: 20px;
+    border-bottom: 2px solid #00ff00;
+}
+
+.darkweb-style .onion-logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.darkweb-style .warning {
+    color: #ff0000;
+    font-size: 14px;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0.5; }
+}
+
+.darkweb-style .darkweb-thread {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.darkweb-style .thread-header h2 {
+    color: #00ff00;
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.darkweb-style .thread-info {
+    color: #00aa00;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.darkweb-style .darkweb-post {
+    background: #0f0f0f;
+    border: 1px solid #00ff00;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.darkweb-style .post-meta {
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+
+.darkweb-style .username {
+    color: #00ffff;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.darkweb-style .timestamp {
+    color: #00aa00;
+}
+
+.darkweb-style .post-text {
+    line-height: 1.6;
+    color: #00ff00;
+}
+
+/* Tech Forum Style (TechSupportForum) */
+.techforum-style {
+    background: #f0f2f5;
+}
+
+.techforum-style .techforum-header {
+    background: #2c3e50;
+    color: #fff;
+    padding: 15px 20px;
+}
+
+.techforum-style .forum-logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.techforum-style .forum-nav {
+    font-size: 13px;
+    color: #95a5a6;
+}
+
+.techforum-style .forum-thread {
+    max-width: 1000px;
+    margin: 20px auto;
+    background: #fff;
+    border: 1px solid #ddd;
+}
+
+.techforum-style .thread-title-bar {
+    background: #34495e;
+    color: #fff;
+    padding: 15px 20px;
+}
+
+.techforum-style .thread-title-bar h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.techforum-style .forum-post {
+    display: flex;
+    border-bottom: 1px solid #e1e8ed;
+    padding: 20px;
+}
+
+.techforum-style .post-sidebar {
+    width: 150px;
+    text-align: center;
+    padding-right: 20px;
+    border-right: 1px solid #e1e8ed;
+}
+
+.techforum-style .post-avatar {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.techforum-style .post-username {
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 5px;
+    word-wrap: break-word;
+}
+
+.techforum-style .post-rank {
+    font-size: 12px;
+    color: #7f8c8d;
+    margin-bottom: 3px;
+}
+
+.techforum-style .post-count {
+    font-size: 11px;
+    color: #95a5a6;
+}
+
+.techforum-style .post-content-area {
+    flex: 1;
+    padding-left: 20px;
+}
+
+.techforum-style .post-timestamp {
+    font-size: 12px;
+    color: #7f8c8d;
+    margin-bottom: 10px;
+}
+
+.techforum-style .post-body {
+    line-height: 1.6;
+    color: #2c3e50;
+}
