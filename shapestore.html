@@ -103,15 +103,57 @@
         <img src="logoshapestore.png" alt="The Shape Store" class="logo">
     </header>
 
+    <style>
+        .wiggly-text {
+            text-decoration: none;
+            cursor: pointer;
+            display: inline-block;
+            white-space: nowrap;
+        }
+        .wiggly-text:hover {
+            text-shadow: 0 0 8px rgba(255,255,255,0.5);
+        }
+        .wiggly-text span {
+            display: inline-block;
+        }
+        #necklace-canvas {
+            width: 95vw;
+            max-width: 900px;
+            height: 700px;
+        }
+        @media (max-width: 768px) {
+            #necklace-canvas {
+                width: 95vw;
+                height: 50vh;
+            }
+            #necklace-text {
+                font-size: 11px !important;
+                letter-spacing: 1px !important;
+            }
+        }
+        @media (max-width: 480px) {
+            #necklace-canvas {
+                width: 100vw;
+                height: 45vh;
+            }
+            #necklace-text {
+                font-size: 9px !important;
+                letter-spacing: 0.5px !important;
+            }
+        }
+    </style>
+
     <!-- 3D Door Portal -->
     <div id="door-section">
+        <a href="shapes-room.html" id="door-text" class="wiggly-text" style="display: block; text-align: center; padding: 8px 0 4px 0; font-family: 'MS Sans Serif', 'Segoe UI', Tahoma, sans-serif; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">Click the door</a>
         <div id="door-container"></div>
     </div>
 
-    <!-- Shopify Buy Button Container -->
-    <div id="shopify-collection" class="shopify-container">
-        <div id='product-component-1772131504141'></div>
-    </div>
+    <!-- 3D Necklace Section -->
+    <a id="necklace-section" href="https://necklace.infinitearchive.net/" style="text-align: center; padding: 20px 0; position: relative; display: block; text-decoration: none; z-index: 10;">
+        <canvas id="necklace-canvas" style="display: block; margin: 0 auto; cursor: pointer;"></canvas>
+        <span id="necklace-text" class="wiggly-text" style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); font-family: 'MS Sans Serif', 'Segoe UI', Tahoma, sans-serif; font-size: 14px; letter-spacing: 2px; text-transform: uppercase;">Obtain a Shape Necklace</span>
+    </a>
 
     <!-- Mini Game UI -->
     <div id="game-ui" class="game-ui hidden">
@@ -454,92 +496,208 @@
     <script src="buckets.js"></script>
     <script src="door3d.js"></script>
     
-    <!-- Shopify Buy Button -->
-    <script type="text/javascript">
-    (function () {
-      var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
-      if (window.ShopifyBuy) {
-        if (window.ShopifyBuy.UI) {
-          ShopifyBuyInit();
-        } else {
-          loadScript();
+    <!-- 3D Necklace Scene -->
+    <script>
+    (function() {
+        var canvas = document.getElementById('necklace-canvas');
+        if (!canvas) return;
+
+        var rect = canvas.getBoundingClientRect();
+        var W = rect.width, H = rect.height;
+        var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(W, H);
+
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(40, W / H, 0.1, 100);
+        camera.position.set(0, -0.2, 12);
+
+        window.addEventListener('resize', function() {
+            var r = canvas.getBoundingClientRect();
+            W = r.width; H = r.height;
+            renderer.setSize(W, H);
+            camera.aspect = W / H;
+            camera.updateProjectionMatrix();
+        });
+
+        scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+        var dLight = new THREE.DirectionalLight(0xffffff, 0.9);
+        dLight.position.set(3, 5, 4);
+        scene.add(dLight);
+        var dLight2 = new THREE.DirectionalLight(0xE3F2FD, 0.3);
+        dLight2.position.set(-3, 3, -2);
+        scene.add(dLight2);
+
+        function makeMat(color) {
+            return new THREE.MeshStandardMaterial({ color: color, roughness: 0.4, metalness: 0.1 });
         }
-      } else {
-        loadScript();
-      }
-      function loadScript() {
-        var script = document.createElement('script');
-        script.async = true;
-        script.src = scriptURL;
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
-        script.onload = ShopifyBuyInit;
-      }
-      function ShopifyBuyInit() {
-        var client = ShopifyBuy.buildClient({
-          domain: '41ic0w-2f.myshopify.com',
-          storefrontAccessToken: '6e54032e3f45a6f5eae1c08fedff0078',
-        });
-        ShopifyBuy.UI.onReady(client).then(function (ui) {
-          ui.createComponent('product', {
-            id: '8665942524057',
-            node: document.getElementById('product-component-1772131504141'),
-            moneyFormat: '%24%7B%7Bamount%7D%7D',
-            options: {
-              "product": {
-                "styles": {
-                  "product": {
-                    "@media (min-width: 601px)": {
-                      "max-width": "calc(25% - 20px)",
-                      "margin-left": "20px",
-                      "margin-bottom": "50px"
+
+        /* --- Star geometry --- */
+        function makeStarGeo(size) {
+            var shape = new THREE.Shape();
+            var outerR = size * 0.5;
+            var innerR = size * 0.2;
+            for (var i = 0; i < 10; i++) {
+                var r = (i % 2 === 0) ? outerR : innerR;
+                var angle = (i * Math.PI) / 5 - Math.PI / 2;
+                if (i === 0) shape.moveTo(Math.cos(angle) * r, Math.sin(angle) * r);
+                else shape.lineTo(Math.cos(angle) * r, Math.sin(angle) * r);
+            }
+            shape.closePath();
+            return new THREE.ExtrudeGeometry(shape, { depth: size * 0.18, bevelEnabled: false });
+        }
+
+        /* --- Catenary / U-shape curve --- */
+        var COLORS = [
+            0xD63230, 0xF5B700, 0x1B4DE4, 0x2D936C, 0xbe83f4,
+            0xD63230, 0xF5B700, 0x1B4DE4, 0x2D936C, 0xbe83f4
+        ];
+        var necklaceGroup = new THREE.Group();
+        scene.add(necklaceGroup);
+
+        var beadCount = 25;
+        var beads = [];
+        var spread = 3.2;
+        var sag = 1.8;
+
+        for (var i = 0; i < beadCount; i++) {
+            var t = i / (beadCount - 1);
+            var x = (t - 0.5) * spread * 2;
+            var y = sag * (4 * (t - 0.5) * (t - 0.5) - 1);
+
+            var geo;
+            var size;
+            var isStar = (i === Math.floor(beadCount / 2));
+
+            if (isStar) {
+                // Gold star at center
+                size = 0.7;
+                geo = makeStarGeo(size);
+            } else {
+                var shapeType = i % 3;
+                size = 0.22 + Math.random() * 0.12;
+                if (shapeType === 0) {
+                    geo = new THREE.BoxGeometry(size, size, size);
+                } else if (shapeType === 1) {
+                    geo = new THREE.SphereGeometry(size * 0.55, 14, 14);
+                } else {
+                    geo = new THREE.OctahedronGeometry(size * 0.5);
+                }
+            }
+
+            var color = isStar ? 0xD4A017 : COLORS[i % COLORS.length];
+            var mat = makeMat(color);
+            var bead = new THREE.Mesh(geo, mat);
+            bead.position.set(x, y, 0);
+
+            if (isStar) {
+                bead.rotation.z = 0;
+                bead.position.y -= 0.15;
+            } else {
+                bead.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+            }
+
+            bead.scale.set(0, 0, 0);
+            bead.userData.targetScale = 1;
+            bead.userData.spawnDelay = i * 0.05;
+            bead.userData.spawned = false;
+            bead.userData.rotSpeed = isStar ? 0.3 : (Math.random() - 0.5) * 1.5;
+            bead.userData.isStar = isStar;
+
+            necklaceGroup.add(bead);
+            beads.push(bead);
+        }
+
+        // Thin rope segments between beads
+        for (var i = 0; i < beadCount - 1; i++) {
+            var a = beads[i].position;
+            var b = beads[i + 1].position;
+            var mid = new THREE.Vector3().addVectors(a, b).multiplyScalar(0.5);
+            var dist = a.distanceTo(b);
+            var ropeGeo = new THREE.CylinderGeometry(0.015, 0.015, dist, 6);
+            var ropeMat = new THREE.MeshStandardMaterial({ color: 0x666666, roughness: 0.5, metalness: 0.2 });
+            var seg = new THREE.Mesh(ropeGeo, ropeMat);
+            seg.position.copy(mid);
+            var dir = new THREE.Vector3().subVectors(b, a).normalize();
+            seg.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+            necklaceGroup.add(seg);
+        }
+
+        necklaceGroup.position.y = 3.4;
+
+        var startTime = Date.now();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            var elapsed = (Date.now() - startTime) / 1000;
+
+            for (var i = 0; i < beads.length; i++) {
+                var bd = beads[i];
+                if (!bd.userData.spawned && elapsed > bd.userData.spawnDelay) {
+                    bd.userData.spawned = true;
+                }
+                if (bd.userData.spawned) {
+                    var s = bd.scale.x;
+                    if (s < bd.userData.targetScale) {
+                        var ns = Math.min(s + 0.06, bd.userData.targetScale);
+                        bd.scale.set(ns, ns, ns);
                     }
-                  }
-                },
-                "text": {
-                  "button": "Add to cart"
                 }
-              },
-              "productSet": {
-                "styles": {
-                  "products": {
-                    "@media (min-width: 601px)": {
-                      "margin-left": "-20px"
-                    }
-                  }
+                if (bd.userData.isStar) {
+                    bd.rotation.y += 0.012;
+                } else {
+                    bd.rotation.x += 0.008 * bd.userData.rotSpeed;
+                    bd.rotation.y += 0.012 * bd.userData.rotSpeed;
                 }
-              },
-              "modalProduct": {
-                "contents": {
-                  "img": false,
-                  "imgWithCarousel": true,
-                  "button": false,
-                  "buttonWithQuantity": true
-                },
-                "styles": {
-                  "product": {
-                    "@media (min-width: 601px)": {
-                      "max-width": "100%",
-                      "margin-left": "0px",
-                      "margin-bottom": "0px"
-                    }
-                  }
-                },
-                "text": {
-                  "button": "Add to cart"
-                }
-              },
-              "option": {},
-              "cart": {
-                "text": {
-                  "total": "Subtotal",
-                  "button": "Checkout"
-                }
-              },
-              "toggle": {}
-            },
-          });
-        });
-      }
+            }
+
+            necklaceGroup.position.y = 3.4 + Math.sin(elapsed * 0.8) * 0.15;
+
+            renderer.render(scene, camera);
+        }
+        animate();
+    })();
+    </script>
+
+    <!-- Wiggly Squiggly Text Animation -->
+    <script>
+    (function() {
+        var COLORS = ['#D63230', '#1B4DE4', '#2D936C', '#F5B700'];
+
+        function wigglyfy(el) {
+            if (!el) return;
+            var text = el.textContent;
+            el.textContent = '';
+            var spans = [];
+            for (var i = 0; i < text.length; i++) {
+                var span = document.createElement('span');
+                span.textContent = text[i] === ' ' ? '\u00A0' : text[i];
+                span.style.display = 'inline-block';
+                el.appendChild(span);
+                spans.push({ el: span, index: i });
+            }
+            return spans;
+        }
+
+        var doorSpans = wigglyfy(document.getElementById('door-text'));
+        var necklaceSpans = wigglyfy(document.getElementById('necklace-text'));
+        var allSpans = (doorSpans || []).concat(necklaceSpans || []);
+
+        function animateWiggle() {
+            requestAnimationFrame(animateWiggle);
+            var t = Date.now() / 1000;
+            for (var i = 0; i < allSpans.length; i++) {
+                var s = allSpans[i];
+                var idx = s.index;
+                var yOff = Math.sin(t * 3 + idx * 0.5) * 4;
+                var rot = Math.sin(t * 2.5 + idx * 0.7) * 8;
+                var scaleX = 1 + Math.sin(t * 2 + idx * 0.4) * 0.1;
+                var colorIdx = Math.floor((t * 0.8 + idx * 0.3) % COLORS.length);
+                s.el.style.transform = 'translateY(' + yOff + 'px) rotate(' + rot + 'deg) scaleX(' + scaleX + ')';
+                s.el.style.color = COLORS[(colorIdx + COLORS.length) % COLORS.length];
+            }
+        }
+        animateWiggle();
     })();
     </script>
 </body>

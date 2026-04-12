@@ -54,6 +54,191 @@
             transform: translate(-50%, -50%);
             z-index: 100;
             text-align: center;
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        #product-component-1775948676327 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Mobile organized layout */
+        .mobile-product-layout {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                overflow: auto;
+            }
+
+            #shapes-room-container {
+                position: fixed;
+                height: 100%;
+            }
+
+            #buy-button-container {
+                display: none;
+            }
+
+            .win98-popup {
+                display: none !important;
+            }
+
+            .mobile-product-layout {
+                display: flex;
+                position: relative;
+                z-index: 100;
+                padding: 10px;
+                padding-top: 10px;
+                margin-top: 50px;
+                gap: 8px;
+            }
+
+            .mobile-product-col {
+                flex: 1;
+                min-width: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .mobile-product-col .win98-window {
+                min-width: unset;
+                width: 100%;
+                margin: 0;
+            }
+
+            .mobile-product-col .win98-content {
+                padding: 6px;
+            }
+
+            .mobile-product-col .win98-address-bar {
+                font-size: 9px;
+                margin-bottom: 6px;
+                padding: 2px 3px;
+            }
+
+            .mobile-product-col .product-area {
+                padding: 6px;
+            }
+
+            .mobile-product-col .product-label {
+                font-size: 9px;
+                margin-bottom: 6px;
+            }
+
+            .mobile-product-col .win98-title {
+                font-size: 9px;
+            }
+
+            .mobile-product-col .win98-titlebar {
+                padding: 2px 3px;
+            }
+
+            .mobile-product-col .win98-statusbar {
+                font-size: 9px;
+                padding: 1px 3px;
+            }
+
+            .mobile-product-col .statusbar-section {
+                padding: 1px 4px;
+            }
+
+            .mobile-gallery {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 6px;
+            }
+
+            .mobile-gallery .gallery-item .win98-window {
+                min-width: unset;
+                width: 100%;
+            }
+
+            .mobile-gallery .gallery-item .product-area {
+                padding: 4px;
+            }
+
+            .mobile-gallery .gallery-item .product-area img {
+                width: 100%;
+                height: auto;
+                display: block;
+            }
+
+            .mobile-gallery .gallery-item .win98-title {
+                font-size: 8px;
+            }
+
+            .mobile-gallery .gallery-item .win98-titlebar {
+                padding: 2px 3px;
+            }
+
+            .mobile-gallery .gallery-item .win98-content {
+                padding: 4px;
+            }
+
+            .mobile-gallery .gallery-item.full-width {
+                grid-column: 1 / -1;
+            }
+
+            .mobile-gallery .gallery-item .text-content {
+                font-size: 9px;
+                max-height: none;
+                overflow-y: visible;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+            }
+
+            .gallery-item.enlarged {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                z-index: 9999;
+                width: 85vw;
+                max-height: 90vh;
+            }
+
+            .gallery-item.enlarged .win98-window {
+                width: 100%;
+                box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
+            }
+
+            .gallery-item.enlarged .product-area img {
+                width: 100%;
+                height: auto;
+            }
+
+            .gallery-item .minimize-btn {
+                display: none;
+            }
+
+            .gallery-item.enlarged .minimize-btn {
+                display: flex;
+                position: absolute;
+                top: 2px;
+                right: 4px;
+                width: 22px;
+                height: 18px;
+                background: #c0c0c0;
+                border: 1px solid;
+                border-color: #dfdfdf #808080 #808080 #dfdfdf;
+                font-size: 12px;
+                font-weight: bold;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                z-index: 10000;
+                font-family: 'Marlett', sans-serif;
+            }
+
+            .gallery-item.enlarged .minimize-btn:active {
+                border-color: #808080 #dfdfdf #dfdfdf #808080;
+            }
         }
 
         /* Windows 98 Window */
@@ -284,8 +469,207 @@
     <!-- Back Button -->
     <a href="shapestore.html" class="back-btn">←</a>
 
+    <!-- Mobile Organized Layout -->
+    <div class="mobile-product-layout">
+        <!-- Hoodie Column -->
+        <div class="mobile-product-col">
+            <div class="win98-window">
+                <div class="win98-titlebar">
+                    <div class="win98-title">
+                        <div class="win98-title-icon">◆</div>
+                        Hoodie
+                    </div>
+                    <div class="win98-controls">
+                        <div class="win98-btn">_</div>
+                        <div class="win98-btn">□</div>
+                        <div class="win98-btn">×</div>
+                    </div>
+                </div>
+                <div class="win98-content">
+                    <div class="win98-address-bar">
+                        <span>Address:</span> shapestore.com/hoodie
+                    </div>
+                    <div class="product-area">
+                        <div class="product-label">SHAPE STORE HOODIE</div>
+                        <div id='mobile-product-hoodie'></div>
+                    </div>
+                </div>
+                <div class="win98-statusbar">
+                    <div class="statusbar-section">Done</div>
+                    <div class="statusbar-section">Internet</div>
+                </div>
+            </div>
+            <div class="mobile-gallery">
+                <div class="gallery-item">
+                    <div class="minimize-btn">_</div>
+                    <div class="win98-window">
+                        <div class="win98-titlebar">
+                            <div class="win98-title">
+                                <div class="win98-title-icon">◆</div>
+                                sleeve.png
+                            </div>
+                        </div>
+                        <div class="win98-content">
+                            <div class="product-area">
+                                <img src="sleeve.png" alt="Sleeve Detail">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="minimize-btn">_</div>
+                    <div class="win98-window">
+                        <div class="win98-titlebar">
+                            <div class="win98-title">
+                                <div class="win98-title-icon">◆</div>
+                                close.png
+                            </div>
+                        </div>
+                        <div class="win98-content">
+                            <div class="product-area">
+                                <img src="close.png" alt="Close Up Detail">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="minimize-btn">_</div>
+                    <div class="win98-window">
+                        <div class="win98-titlebar">
+                            <div class="win98-title">
+                                <div class="win98-title-icon">◆</div>
+                                hood.png
+                            </div>
+                        </div>
+                        <div class="win98-content">
+                            <div class="product-area">
+                                <img src="hood.png" alt="Hood Detail">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="minimize-btn">_</div>
+                    <div class="win98-window">
+                        <div class="win98-titlebar">
+                            <div class="win98-title">
+                                <div class="win98-title-icon">◆</div>
+                                size-chart.png
+                            </div>
+                        </div>
+                        <div class="win98-content">
+                            <div class="product-area">
+                                <img src="size-chart.png" alt="Size Chart">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item full-width">
+                    <div class="win98-window">
+                        <div class="win98-titlebar">
+                            <div class="win98-title">
+                                <div class="win98-title-icon">◆</div>
+                                Hoodie Details
+                            </div>
+                        </div>
+                        <div class="win98-content">
+                            <div class="text-content">
+                                <p>This is a very RARE and LIMITED hoodie created in the back of The Shape Store on opening night.</p>
+                                <br>
+                                <p>Please give The Shape Store 1-2 weeks to ship your hoodie.</p>
+                                <br>
+                                <p>80% cotton / 20% polyester fleece 8.5 oz midweight fabric</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tee Column -->
+        <div class="mobile-product-col">
+            <div class="win98-window">
+                <div class="win98-titlebar">
+                    <div class="win98-title">
+                        <div class="win98-title-icon">◆</div>
+                        Tee
+                    </div>
+                    <div class="win98-controls">
+                        <div class="win98-btn">_</div>
+                        <div class="win98-btn">□</div>
+                        <div class="win98-btn">×</div>
+                    </div>
+                </div>
+                <div class="win98-content">
+                    <div class="win98-address-bar">
+                        <span>Address:</span> shapestore.com/tee
+                    </div>
+                    <div class="product-area">
+                        <div class="product-label">SHAPE STORE TEE</div>
+                        <div id='mobile-product-tee'></div>
+                    </div>
+                </div>
+                <div class="win98-statusbar">
+                    <div class="statusbar-section">Done</div>
+                    <div class="statusbar-section">Internet</div>
+                </div>
+            </div>
+            <div class="mobile-gallery">
+                <div class="gallery-item">
+                    <div class="minimize-btn">_</div>
+                    <div class="win98-window">
+                        <div class="win98-titlebar">
+                            <div class="win98-title">
+                                <div class="win98-title-icon">◆</div>
+                                teeclose.png
+                            </div>
+                        </div>
+                        <div class="win98-content">
+                            <div class="product-area">
+                                <img src="teeclose.png" alt="Tee Close Up">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="minimize-btn">_</div>
+                    <div class="win98-window">
+                        <div class="win98-titlebar">
+                            <div class="win98-title">
+                                <div class="win98-title-icon">◆</div>
+                                shapetee.png
+                            </div>
+                        </div>
+                        <div class="win98-content">
+                            <div class="product-area">
+                                <img src="shapetee.png" alt="Shape Tee">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item full-width">
+                    <div class="win98-window">
+                        <div class="win98-titlebar">
+                            <div class="win98-title">
+                                <div class="win98-title-icon">◆</div>
+                                Tee Details
+                            </div>
+                        </div>
+                        <div class="win98-content">
+                            <div class="text-content">
+                                <p>From my personal collection of very rare shape tees I have hoarded over 20 years... please give 1-2 weeks for item to be shipped</p>
+                                <br>
+                                <p>7.5 oz heavyweight fabric<br>100% USA cotton<br>Oversized / relaxed fit<br>Slight drop shoulder<br>Double-needle stitched sleeves &amp; hem<br>Reinforced neck with stretch-resistant rib<br>Shoulder-to-shoulder taping<br>Quarter-turned to eliminate center crease</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Sleeve Image Popup -->
-    <div class="win98-popup image-popup" id="popup-sleeve">
+    <div class="win98-popup image-popup" id="popup-sleeve" data-side="left">
         <div class="win98-window">
             <div class="win98-titlebar">
                 <div class="win98-title">
@@ -308,7 +692,7 @@
     </div>
 
     <!-- Close Image Popup -->
-    <div class="win98-popup image-popup" id="popup-close">
+    <div class="win98-popup image-popup" id="popup-close" data-side="left">
         <div class="win98-window">
             <div class="win98-titlebar">
                 <div class="win98-title">
@@ -331,7 +715,7 @@
     </div>
 
     <!-- Hood Image Popup -->
-    <div class="win98-popup image-popup" id="popup-hood">
+    <div class="win98-popup image-popup" id="popup-hood" data-side="left">
         <div class="win98-window">
             <div class="win98-titlebar">
                 <div class="win98-title">
@@ -353,8 +737,54 @@
         </div>
     </div>
 
+    <!-- Tee Close Image Popup -->
+    <div class="win98-popup image-popup" id="popup-teeclose" data-side="right">
+        <div class="win98-window">
+            <div class="win98-titlebar">
+                <div class="win98-title">
+                    <div class="win98-title-icon">◆</div>
+                    teeclose.png
+                </div>
+                <div class="win98-controls">
+                    <div class="win98-btn">_</div>
+                    <div class="win98-btn">□</div>
+                    <div class="win98-btn">×</div>
+                </div>
+            </div>
+            <div class="win98-content">
+                <div class="product-area">
+                    <img src="teeclose.png" alt="Tee Close Up">
+                </div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+    </div>
+
+    <!-- Shape Tee Image Popup -->
+    <div class="win98-popup image-popup" id="popup-shapetee" data-side="right">
+        <div class="win98-window">
+            <div class="win98-titlebar">
+                <div class="win98-title">
+                    <div class="win98-title-icon">◆</div>
+                    shapetee.png
+                </div>
+                <div class="win98-controls">
+                    <div class="win98-btn">_</div>
+                    <div class="win98-btn">□</div>
+                    <div class="win98-btn">×</div>
+                </div>
+            </div>
+            <div class="win98-content">
+                <div class="product-area">
+                    <img src="shapetee.png" alt="Shape Tee">
+                </div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+    </div>
+
     <!-- Size Chart Image Popup -->
-    <div class="win98-popup image-popup" id="popup-sizechart">
+    <div class="win98-popup image-popup" id="popup-sizechart" data-side="left">
         <div class="win98-window">
             <div class="win98-titlebar">
                 <div class="win98-title">
@@ -376,13 +806,37 @@
         </div>
     </div>
 
-    <!-- Description Text Popup -->
-    <div class="win98-popup text-popup" id="popup-description">
+    <!-- Tee Description Text Popup -->
+    <div class="win98-popup text-popup" id="popup-tee-description" data-side="right">
         <div class="win98-window">
             <div class="win98-titlebar">
                 <div class="win98-title">
                     <div class="win98-title-icon">◆</div>
-                    Product Details
+                    Tee Details
+                </div>
+                <div class="win98-controls">
+                    <div class="win98-btn">_</div>
+                    <div class="win98-btn">□</div>
+                    <div class="win98-btn">×</div>
+                </div>
+            </div>
+            <div class="win98-content">
+                <div class="text-content">
+                    <p>From my personal collection of very rare shape tees I have hoarded over 20 years... please give 1-2 weeks for item to be shipped</p>
+                    <br>
+                    <p>7.5 oz heavyweight fabric<br>100% USA cotton<br>Oversized / relaxed fit<br>Slight drop shoulder<br>Double-needle stitched sleeves &amp; hem<br>Reinforced neck with stretch-resistant rib<br>Shoulder-to-shoulder taping<br>Quarter-turned to eliminate center crease</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hoodie Details Text Popup -->
+    <div class="win98-popup text-popup" id="popup-description" data-side="left">
+        <div class="win98-window">
+            <div class="win98-titlebar">
+                <div class="win98-title">
+                    <div class="win98-title-icon">◆</div>
+                    Hoodie Details
                 </div>
                 <div class="win98-controls">
                     <div class="win98-btn">_</div>
@@ -406,11 +860,12 @@
 
     <!-- Buy Button Container -->
     <div id="buy-button-container">
+        <!-- Hoodie Product -->
         <div class="win98-window">
             <div class="win98-titlebar">
                 <div class="win98-title">
                     <div class="win98-title-icon">◆</div>
-                    Shape Store - Internet Explorer
+                    Shape Store - Hoodie
                 </div>
                 <div class="win98-controls">
                     <div class="win98-btn">_</div>
@@ -425,6 +880,34 @@
                 <div class="product-area">
                     <div class="product-label">SHAPE STORE HOODIE</div>
                     <div id='product-component-1772228086713'></div>
+                </div>
+            </div>
+            <div class="win98-statusbar">
+                <div class="statusbar-section">Done</div>
+                <div class="statusbar-section">Internet</div>
+            </div>
+        </div>
+
+        <!-- Tee Product -->
+        <div class="win98-window">
+            <div class="win98-titlebar">
+                <div class="win98-title">
+                    <div class="win98-title-icon">◆</div>
+                    Shape Store - Tee
+                </div>
+                <div class="win98-controls">
+                    <div class="win98-btn">_</div>
+                    <div class="win98-btn">□</div>
+                    <div class="win98-btn">×</div>
+                </div>
+            </div>
+            <div class="win98-content">
+                <div class="win98-address-bar">
+                    <span>Address:</span> https://shapestore.com/tee
+                </div>
+                <div class="product-area">
+                    <div class="product-label">SHAPE STORE TEE</div>
+                    <div id='product-component-1775948676327'></div>
                 </div>
             </div>
             <div class="win98-statusbar">
@@ -467,11 +950,9 @@
           storefrontAccessToken: '6e54032e3f45a6f5eae1c08fedff0078',
         });
         ShopifyBuy.UI.onReady(client).then(function (ui) {
-          ui.createComponent('product', {
-            id: '8667494383769',
-            node: document.getElementById('product-component-1772228086713'),
-            moneyFormat: '%24%7B%7Bamount%7D%7D',
-            options: {
+          var hoodieNode = document.getElementById('product-component-1772228086713');
+          var mobileHoodieNode = document.getElementById('mobile-product-hoodie');
+          var hoodieOptions = {
   "product": {
     "styles": {
       "product": {
@@ -568,8 +1049,172 @@
       }
     }
   }
-},
-          });
+};
+          if (hoodieNode) {
+            ui.createComponent('product', {
+              id: '8667494383769',
+              node: hoodieNode,
+              moneyFormat: '%24%7B%7Bamount%7D%7D',
+              options: hoodieOptions,
+            });
+          }
+          if (mobileHoodieNode) {
+            ui.createComponent('product', {
+              id: '8667494383769',
+              node: mobileHoodieNode,
+              moneyFormat: '%24%7B%7Bamount%7D%7D',
+              options: hoodieOptions,
+            });
+          }
+        });
+      }
+    })();
+    /*]]>*/
+    </script>
+
+    <!-- Shopify Buy Button - Tee -->
+    <script type="text/javascript">
+    /*<![CDATA[*/
+    (function () {
+      var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+      if (window.ShopifyBuy) {
+        if (window.ShopifyBuy.UI) {
+          ShopifyBuyInitTee();
+        } else {
+          loadScriptTee();
+        }
+      } else {
+        loadScriptTee();
+      }
+      function loadScriptTee() {
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = scriptURL;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+        script.onload = ShopifyBuyInitTee;
+      }
+      function ShopifyBuyInitTee() {
+        var client = ShopifyBuy.buildClient({
+          domain: '41ic0w-2f.myshopify.com',
+          storefrontAccessToken: '6e54032e3f45a6f5eae1c08fedff0078',
+        });
+        ShopifyBuy.UI.onReady(client).then(function (ui) {
+          var teeNode = document.getElementById('product-component-1775948676327');
+          var mobileTeeNode = document.getElementById('mobile-product-tee');
+          var teeOptions = {
+  "product": {
+    "styles": {
+      "product": {
+        "@media (min-width: 601px)": {
+          "max-width": "calc(25% - 20px)",
+          "margin-left": "20px",
+          "margin-bottom": "50px"
+        }
+      },
+      "button": {
+        "font-family": "Avant Garde, sans-serif",
+        ":hover": {
+          "background-color": "#ab76dc"
+        },
+        "background-color": "#be83f4",
+        ":focus": {
+          "background-color": "#ab76dc"
+        }
+      }
+    },
+    "text": {
+      "button": "Add to cart"
+    }
+  },
+  "productSet": {
+    "styles": {
+      "products": {
+        "@media (min-width: 601px)": {
+          "margin-left": "-20px"
+        }
+      }
+    }
+  },
+  "modalProduct": {
+    "contents": {
+      "img": false,
+      "imgWithCarousel": true,
+      "button": false,
+      "buttonWithQuantity": true
+    },
+    "styles": {
+      "product": {
+        "@media (min-width: 601px)": {
+          "max-width": "100%",
+          "margin-left": "0px",
+          "margin-bottom": "0px"
+        }
+      },
+      "button": {
+        "font-family": "Avant Garde, sans-serif",
+        ":hover": {
+          "background-color": "#ab76dc"
+        },
+        "background-color": "#be83f4",
+        ":focus": {
+          "background-color": "#ab76dc"
+        }
+      }
+    },
+    "text": {
+      "button": "Add to cart"
+    }
+  },
+  "option": {},
+  "cart": {
+    "styles": {
+      "button": {
+        "font-family": "Avant Garde, sans-serif",
+        ":hover": {
+          "background-color": "#ab76dc"
+        },
+        "background-color": "#be83f4",
+        ":focus": {
+          "background-color": "#ab76dc"
+        }
+      }
+    },
+    "text": {
+      "total": "Subtotal",
+      "button": "Checkout"
+    }
+  },
+  "toggle": {
+    "styles": {
+      "toggle": {
+        "font-family": "Avant Garde, sans-serif",
+        "background-color": "#be83f4",
+        ":hover": {
+          "background-color": "#ab76dc"
+        },
+        ":focus": {
+          "background-color": "#ab76dc"
+        }
+      }
+    }
+  }
+};
+          if (teeNode) {
+            ui.createComponent('product', {
+              id: '8704737771673',
+              node: teeNode,
+              moneyFormat: '%24%7B%7Bamount%7D%7D',
+              options: teeOptions,
+            });
+          }
+          if (mobileTeeNode) {
+            ui.createComponent('product', {
+              id: '8704737771673',
+              node: mobileTeeNode,
+              moneyFormat: '%24%7B%7Bamount%7D%7D',
+              options: teeOptions,
+            });
+          }
         });
       }
     })();
@@ -583,20 +1228,29 @@
         const imagePopups = document.querySelectorAll('.win98-popup.image-popup');
         let highestZIndex = 600;
 
-        // Random placement for each popup
+        // Organized placement: hoodie popups on left, tee popups on right
         popups.forEach((popup, index) => {
             const windowWidth = window.innerWidth;
             const windowHeight = window.innerHeight;
             const popupWidth = 250;
             const popupHeight = 300;
-            
-            const maxX = windowWidth - popupWidth - 50;
-            const maxY = windowHeight - popupHeight - 50;
-            const minX = 50;
+            const side = popup.getAttribute('data-side');
+
+            let minX, maxX;
+            if (side === 'left') {
+                minX = 50;
+                maxX = Math.floor(windowWidth / 2) - popupWidth - 20;
+            } else {
+                minX = Math.floor(windowWidth / 2) + 20;
+                maxX = windowWidth - popupWidth - 50;
+            }
+            if (maxX < minX) maxX = minX + 50;
+
             const minY = 50;
+            const maxY = windowHeight - popupHeight - 50;
             
             const randomX = Math.floor(Math.random() * (maxX - minX)) + minX;
-            const randomY = Math.floor(Math.random() * (maxY - minY)) + minY;
+            const randomY = Math.floor(Math.random() * (Math.max(maxY, minY + 50) - minY)) + minY;
             
             popup.style.left = randomX + 'px';
             popup.style.top = randomY + 'px';
@@ -756,6 +1410,33 @@
                 });
             });
         }
+    })();
+    </script>
+
+    <!-- Mobile Gallery Enlarge Script -->
+    <script>
+    (function() {
+        var galleryItems = document.querySelectorAll('.mobile-gallery .gallery-item');
+        galleryItems.forEach(function(item) {
+            var img = item.querySelector('.product-area img');
+            var minBtn = item.querySelector('.minimize-btn');
+
+            if (img) {
+                img.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (!item.classList.contains('enlarged')) {
+                        item.classList.add('enlarged');
+                    }
+                });
+            }
+
+            if (minBtn) {
+                minBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    item.classList.remove('enlarged');
+                });
+            }
+        });
     })();
     </script>
 </body>
